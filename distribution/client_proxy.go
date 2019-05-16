@@ -1,7 +1,7 @@
 package distribution
 
 import (
-	"../network"
+	"github.com/joaoluizn/RPC-go/network"
 )
 
 // NewClientProxy: Create ClientProxy instance;

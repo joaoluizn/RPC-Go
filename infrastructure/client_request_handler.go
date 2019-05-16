@@ -10,7 +10,7 @@ import (
 // NewClientRequestHandler:  Create ClientRequestHandler instance;
 func NewClientRequestHandler() *ClientRequestHandler {
 	return &ClientRequestHandler{
-		Client: &http.Client {
+		Client: &http.Client{
 			// 10 seconds until timeout in any request.
 			Timeout: 10 * time.Second},
 	}
@@ -38,7 +38,7 @@ func (r *ClientRequestHandler) Lookup(namingServerAddr string, serviceName strin
 func (r *ClientRequestHandler) Send(remoteServiceAddr string, request *bytes.Buffer) *http.Response {
 	response, err := r.Post(
 		// URL
-		"http://" + remoteServiceAddr + "/invoke/",
+		"http://"+remoteServiceAddr+"/invoke/",
 		// ContentType
 		"service/json",
 		// Data

@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"net/http"
 
-	"../infrastructure"
-	"../network"
+	"github.com/joaoluizn/RPC-go/infrastructure"
+	"github.com/joaoluizn/RPC-go/network"
 )
 
 // NewRequestor: Create a Requestor instance;
