@@ -1,6 +1,11 @@
 package main
 
-func name_service_main() {
-	namingServiceServer := naming.NewNamingServiceServer("4769")
+import "github.com/joaoluizn/RPC-go/layers/infrastructure"
+
+func main() {
+	namingServerAddr := "0.0.0.0"
+	namingServerPort := "8923"
+
+	namingServiceServer := infrastructure.NewNamingServiceServer(namingServerAddr, namingServerPort)
 	namingServiceServer.Run()
 }

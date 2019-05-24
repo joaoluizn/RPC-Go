@@ -1,10 +1,10 @@
-package distribution
+package client
 
 import (
 	"bytes"
 	"net/http"
 
-	"github.com/joaoluizn/RPC-go/infrastructure"
+	"github.com/joaoluizn/RPC-go/layers/infrastructure"
 	"github.com/joaoluizn/RPC-go/network"
 )
 

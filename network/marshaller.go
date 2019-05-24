@@ -6,8 +6,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	// "net"
-	// "request"
 )
 
 // NewMarshaller build new instance of marshaller
@@ -32,8 +30,16 @@ func (m *Marshaller) UnmarshallLookupResponse(httpResponse *http.Response) strin
 	return content
 }
 
-// Client Marshaller
+func (m *Marshaller) MarshallLookupResponse(address string) []byte {
+	addressBytes, err := json.Marshal(address)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 
+	return addressBytes
+}
+
+// Client Marshaller
 // MarshallClientRequest: Serializes a client request;
 func (m *Marshaller) MarshallClientRequest(clientInvokeRequest *ClientRequest) *bytes.Buffer {
 	requestBytes, err := json.Marshal(clientInvokeRequest)

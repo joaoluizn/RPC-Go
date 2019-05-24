@@ -1,4 +1,4 @@
-package distribution
+package client
 
 import (
 	"github.com/joaoluizn/RPC-go/network"
