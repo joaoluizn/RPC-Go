@@ -1,11 +1,10 @@
-package infrastructure
+package storage
 
 import (
 	"log"
 	"net"
 	"net/http"
 
-	"github.com/joaoluizn/RPC-go/layers/infrastructure"
 	"github.com/joaoluizn/RPC-go/network"
 )
 
@@ -13,7 +12,7 @@ func NewStorageServiceServer(serviceAddr string, servicePort string) *StorageSer
 	return &StorageServiceServer{
 		registrationServerAddress: serviceAddr,
 		port:                      servicePort,
-		requestHandler:            infrastructure.NewRemoteServiceRequestHandler(),
+		requestHandler:            NewStorageServiceRequestHandler(),
 	}
 }
 
@@ -21,7 +20,7 @@ func NewStorageServiceServer(serviceAddr string, servicePort string) *StorageSer
 type StorageServiceServer struct {
 	registrationServerAddress string
 	port                      string
-	requestHandler            *infrastructure.StorageServiceRequestHandler
+	requestHandler            *StorageServiceRequestHandler
 }
 
 // Run runs the remote service

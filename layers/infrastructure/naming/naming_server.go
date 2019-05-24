@@ -1,18 +1,17 @@
-package infrastructure
+package naming
 
 import (
 	"log"
 	"net"
 	"net/http"
 
-	"github.com/joaoluizn/RPC-go/layers/infrastructure"
 	"github.com/joaoluizn/RPC-go/network"
 )
 
 // NewNamingServiceServer builds a new instance of NamingServiceServer
 func NewNamingServiceServer(namnigServerAddr string, namingServerPort string) *NamingServiceServer {
 	return &NamingServiceServer{
-		requestHandler:   infrastructure.NewNamingServiceRequestHandler(),
+		requestHandler:   NewNamingServiceRequestHandler(),
 		listener:         network.GetTCPListener(namnigServerAddr, namingServerPort),
 		namnigServerAddr: namnigServerAddr,
 		namingServerPort: namingServerPort,
@@ -21,7 +20,7 @@ func NewNamingServiceServer(namnigServerAddr string, namingServerPort string) *N
 
 // NamingServiceServer handles the address for services available for clients
 type NamingServiceServer struct {
-	requestHandler   *infrastructure.NamingServiceRequestHandler
+	requestHandler   *NamingServiceRequestHandler
 	listener         *net.TCPListener
 	namnigServerAddr string
 	namingServerPort string

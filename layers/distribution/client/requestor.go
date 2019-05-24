@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"net/http"
 
-	"github.com/joaoluizn/RPC-go/layers/infrastructure"
+	"github.com/joaoluizn/RPC-go/layers/infrastructure/client"
 	"github.com/joaoluizn/RPC-go/network"
 )
 
@@ -12,7 +12,7 @@ import (
 func NewRequestor(namingServerAddress string) *Requestor {
 	return &Requestor{
 		namingServerAddress: namingServerAddress,
-		requestHandler:      infrastructure.NewClientRequestHandler(),
+		requestHandler:      client.NewClientRequestHandler(),
 		marshaller:          network.NewMarshaller(),
 	}
 }
@@ -20,7 +20,7 @@ func NewRequestor(namingServerAddress string) *Requestor {
 // Requestor: Object reponsible for remote service access;
 type Requestor struct {
 	namingServerAddress string
-	requestHandler      *infrastructure.ClientRequestHandler
+	requestHandler      *client.ClientRequestHandler
 	marshaller          *network.Marshaller
 }
 
