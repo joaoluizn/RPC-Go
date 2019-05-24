@@ -7,6 +7,6 @@ func main() {
 	namingServerPort := "8923"
 
 	remoteServiceServer := storage.NewStorageServiceServer(namingServerAddr, namingServerPort)
-	remoteServiceServer.RegisterServiceInNamingService(ServiceName, NewStorage())
+	remoteServiceServer.RegisterServiceInNamingService(storage.ServiceName, storage.NewStorage())
 	remoteServiceServer.Run()
 }
