@@ -1,12 +1,24 @@
 package main
 
-import "github.com/joaoluizn/RPC-go/layers/infrastructure/storage"
+import (
+	"fmt"
+
+	"github.com/joaoluizn/RPC-go/layers/infrastructure/storage"
+)
 
 func main() {
-	namingServerAddr := "0.0.0.0"
+	storageServerHost := "0.0.0.0"
+	storageServerPort := "8925"
+	namingServerHost := "0.0.0.0"
 	namingServerPort := "8923"
 
-	remoteServiceServer := storage.NewStorageServiceServer(namingServerAddr, namingServerPort)
-	remoteServiceServer.RegisterServiceInNamingService(storage.ServiceName, storage.NewStorage())
+	storageServerAddr := fmt.Sprintf("%s:%s", storageServerHost, storageServerPort)
+	namingServerAddr := fmt.Sprintf("%s:%s", namingServerHost, namingServerPort)
+
+	remoteServiceServer := storage.NewStorageServiceServer(storageServerAddr, namingServerAddr)
+
+	// There could be many services, so one register line for each service in that remote IP
+	remoteServiceServer.RegisterServiceInLocalStorage(storage.ServiceName, storage.NewStorage())
+
 	remoteServiceServer.Run()
 }

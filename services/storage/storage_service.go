@@ -1,6 +1,11 @@
 package storage
 
 import (
+	"bytes"
+	"log"
+	"net/http"
+	"time"
+
 	"github.com/joaoluizn/RPC-go/network"
 )
 
@@ -10,6 +15,9 @@ func NewRemoteService() *RemoteService {
 		// All operations that Storage Service contains
 		services:   make(map[string]interface{}),
 		marshaller: network.NewMarshaller(),
+		clientHttp: &http.Client{
+			// 10 seconds until timeout in any request.
+			Timeout: 10 * time.Second},
 	}
 }
 
@@ -17,6 +25,7 @@ func NewRemoteService() *RemoteService {
 type RemoteService struct {
 	services   map[string]interface{}
 	marshaller *network.Marshaller
+	clientHttp *http.Client
 }
 
 // RegisterService registers a new service that is available for client
@@ -38,20 +47,35 @@ func (r *RemoteService) getServicesNames() []string {
 	return names
 }
 
-// // BindNamingService binds services on naming service server
-// func (r *RemoteService) BindNamingService(address string, namingServiceAddress string) {
-// 	dialer := network.GetTCPDialer(namingServiceAddress)
-// 	defer dialer.Close()
+// SaveServicesToNamingService binds services on naming service server
+func (r *RemoteService) SaveServicesToNamingService(serviceAddr string, namingServerAddr string) {
+	// dialer := network.GetTCPDialer(namingServerAddr)
+	// defer dialer.Close()
 
-// 	names := r.getServicesNames()
-// 	// log.Printf(internal.MsgRegisteringService, names, address)
+	// Get all Storage Operations
+	names := r.getServicesNames()
+	// log.Printf(internal.MsgRegisteringService, names, address)
 
-// 	namingServiceRegistration := request.NewNamingServiceRegistration(names, address)
-// 	namingServiceRegistrationBytes := r.marshaller.MarshalNamingServiceRegistration(namingServiceRegistration)
-// 	err := json.NewEncoder(dialer).Encode(namingServiceRegistrationBytes)
-// 	if err != nil {
-// 		log.Fatalln(err.Error())
-// 	}
+	namingServiceRegistration := network.NewNamingServiceRegistration(names, serviceAddr)
+	namingServiceRegistrationBytes := r.marshaller.MarshalNamingServiceRegistration(namingServiceRegistration)
 
-// 	WatchNamingService(dialer)
-// }
+	r.Register(namingServerAddr, namingServiceRegistrationBytes)
+	// WatchNamingService(dialer)
+}
+
+// Send sends a invoke request to remote service
+func (r *RemoteService) Register(namingServerAddr string, request *bytes.Buffer) *http.Response {
+	response, err := r.clientHttp.Post(
+		// URL
+		"http://"+namingServerAddr+"/register/",
+		// ContentType
+		"service/json",
+		// Data
+		request,
+	)
+	if err != nil {
+		log.Fatal("storage_service (Register): ", err.Error())
+	}
+
+	return response
+}

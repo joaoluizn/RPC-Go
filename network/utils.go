@@ -6,9 +6,8 @@ import (
 )
 
 // GetTCPListener gets a TCP listener choosing the first available port
-func GetTCPListener(addr string, port string) *net.TCPListener {
-	log.Printf(addr + ":" + port)
-	address, _ := net.ResolveTCPAddr("tcp", addr+":"+port)
+func GetTCPListener(serviceAddr string) *net.TCPListener {
+	address, _ := net.ResolveTCPAddr("tcp", serviceAddr)
 	listener, err := net.ListenTCP("tcp", address)
 	if err != nil {
 		log.Fatal("utils (GetTCPListener): ", err.Error())
@@ -21,30 +20,8 @@ func GetTCPDialer(address string) *net.TCPConn {
 	tcpAddress, _ := net.ResolveTCPAddr("tcp", address)
 	dialer, _ := net.DialTCP("tcp", nil, tcpAddress)
 	return dialer
+
 }
-
-// buildAddress builds a network address compose by [host_ip]:[port]
-// func buildAddress(port string) string {
-// 	return getLocalIP() + ":" + port
-// }
-
-// // getLocalIP gets the host ip address
-// func getLocalIP() string {
-// 	addresses, err := net.InterfaceAddrs()
-// 	var hostIP string
-// 	if err != nil {
-// 		hostIP = ""
-// 	}
-
-// 	index := 0
-// 	for hostIP == "" && index < len(addresses) {
-// 		address := addresses[index]
-// 		if ipnet, ok := address.(*net.IPNet); ok && !ipnet.IP.IsLoopback() {
-// 			if ipnet.IP.To4() != nil {
-// 				hostIP = ipnet.IP.String()
-// 			}
-// 		}
-// 		index++
-// 	}
-// 	return hostIP
-// }
+func buildAddress(ip string, port string) string {
+	return ip + ":" + port
+}

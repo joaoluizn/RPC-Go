@@ -1,11 +1,17 @@
 package main
 
-import "github.com/joaoluizn/RPC-go/layers/infrastructure/naming"
+import (
+	"fmt"
+
+	"github.com/joaoluizn/RPC-go/layers/infrastructure/naming"
+)
 
 func main() {
-	namingServerAddr := "0.0.0.0"
+	namingServerHost := "0.0.0.0"
 	namingServerPort := "8923"
 
-	namingServiceServer := naming.NewNamingServiceServer(namingServerAddr, namingServerPort)
+	namingServerAddr := fmt.Sprintf("%s:%s", namingServerHost, namingServerPort)
+
+	namingServiceServer := naming.NewNamingServiceServer(namingServerAddr)
 	namingServiceServer.Run()
 }

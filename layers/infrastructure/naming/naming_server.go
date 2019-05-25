@@ -9,12 +9,11 @@ import (
 )
 
 // NewNamingServiceServer builds a new instance of NamingServiceServer
-func NewNamingServiceServer(namnigServerAddr string, namingServerPort string) *NamingServiceServer {
+func NewNamingServiceServer(namingServerAddr string) *NamingServiceServer {
 	return &NamingServiceServer{
 		requestHandler:   NewNamingServiceRequestHandler(),
-		listener:         network.GetTCPListener(namnigServerAddr, namingServerPort),
-		namnigServerAddr: namnigServerAddr,
-		namingServerPort: namingServerPort,
+		listener:         network.GetTCPListener(namingServerAddr),
+		namnigServerAddr: namingServerAddr,
 	}
 }
 
@@ -23,7 +22,6 @@ type NamingServiceServer struct {
 	requestHandler   *NamingServiceRequestHandler
 	listener         *net.TCPListener
 	namnigServerAddr string
-	namingServerPort string
 }
 
 // Run runs the naming service
@@ -48,22 +46,14 @@ func (n *NamingServiceServer) runHTTPServerForServiceLookup() {
 // runSocketForServicesRegistration runs a network socket for remote services registration
 func (n *NamingServiceServer) runSocketForServicesRegistration() {
 	defer n.listener.Close()
-	// log.Printf("Running Services Registration on", n.namnigServerAddr)
 
+	log.Printf("Running Services Registration on %s", n.namnigServerAddr)
 	for {
-		// connection, err := n.listener.Accept()
-		// if err != nil {
-		// 	log.Println(err.Error())
-		// }
+		http.HandleFunc("/register/", n.requestHandler.HandleRegistrationServices)
 
-		// http.HandleFunc("/register/", func(w http.ResponseWriter, r *http.Request) {
-		// 	n.requestHandler.HandleRegistrationServices("dados")
-		// })
-
-		// serve_err := http.Serve(n.listener, nil)
-		// if serve_err != nil {
-		// 	log.Fatal(serve_err.Error())
-		// }
-
+		serve_err := http.Serve(n.listener, nil)
+		if serve_err != nil {
+			log.Fatal(serve_err.Error())
+		}
 	}
 }

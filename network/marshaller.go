@@ -61,3 +61,26 @@ func (m *Marshaller) UnmarshallClientResponse(httpResponse *http.Response) Respo
 
 	return contentResponse
 }
+
+// Those marshall functions will handle new operation registration over the naming service
+// MarshalNamingServiceRegistration: serializes namingServiceRegistration Object
+func (m *Marshaller) MarshalNamingServiceRegistration(namingServiceRegistration *NamingServiceRegistration) *bytes.Buffer {
+	objectBytes, err := json.Marshal(namingServiceRegistration)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	log.Printf("MarshalNamingServiceRegistration: Marshall complete: Service Registration data ready to be sent")
+	return bytes.NewBuffer(objectBytes)
+}
+
+// UnmarshalNamingServiceRegistration deserializes a request
+func (m *Marshaller) UnmarshalNamingServiceRegistration(httpRequest *http.Request) *NamingServiceRegistration {
+	var registrationRequest NamingServiceRegistration
+	body, err := ioutil.ReadAll(httpRequest.Body)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	json.Unmarshal(body, &registrationRequest)
+	return &registrationRequest
+}

@@ -1,8 +1,6 @@
 package server
 
 import (
-	"log"
-	"net/http"
 	"reflect"
 
 	"github.com/joaoluizn/RPC-go/network"
@@ -23,30 +21,30 @@ type Invoker struct {
 	marshaller    *network.Marshaller
 }
 
-// Invoke runs method requested
-func (i *Invoker) Invoke(request *http.Request) []byte {
-	clientInvoke := i.marshaller.UnmarshalClientInvokeRequest(request)
-	output := i.invoke(clientInvoke)
-	return i.marshaller.MarshalClientResponse(output)
-}
+// // Invoke runs method requested
+// func (i *Invoker) Invoke(request *http.Request) []byte {
+// 	clientInvoke := i.marshaller.UnmarshalClientInvokeRequest(request)
+// 	output := i.invoke(clientInvoke)
+// 	return i.marshaller.MarshalClientResponse(output)
+// }
 
 // invoke runs method requested
-func (i *Invoker) invoke(clientInvoke *request.ClientInvoke) interface{} {
-	// log.Printf(internal.MsgInvokingRemoteService,
-	// clientInvoke.ServiceName, clientInvoke.MethodName, clientInvoke.Arguments,
-	// )
-	service := i.getService(clientInvoke.ServiceName)
-	method := i.getMethod(service, clientInvoke.MethodName)
-	arguments := i.getArguments(method, clientInvoke.Arguments)
-	outputs := method.Call(arguments)
-	return i.getMethodReturn(outputs)
-}
+// func (i *Invoker) invoke(clientInvoke *request.ClientInvoke) interface{} {
+// 	// log.Printf(internal.MsgInvokingRemoteService,
+// 	// clientInvoke.ServiceName, clientInvoke.MethodName, clientInvoke.Arguments,
+// 	// )
+// 	service := i.getService(clientInvoke.ServiceName)
+// 	method := i.getMethod(service, clientInvoke.MethodName)
+// 	arguments := i.getArguments(method, clientInvoke.Arguments)
+// 	outputs := method.Call(arguments)
+// 	return i.getMethodReturn(outputs)
+// }
 
 // getService gets the service requested from service name
 func (i *Invoker) getService(serviceName string) reflect.Value {
 	serviceValue := reflect.ValueOf(i.RemoteService.GetService(serviceName))
 	if !serviceValue.IsValid() {
-		log.Fatalf(internal.MsgServiceNotFound, serviceName)
+		// log.Fatalf(internal.MsgServiceNotFound, serviceName)
 	}
 
 	return serviceValue
@@ -57,7 +55,7 @@ func (i *Invoker) getMethod(service reflect.Value, methodName string) reflect.Va
 	methodType := service.MethodByName(methodName)
 
 	if !methodType.IsValid() {
-		log.Fatalf(internal.MsgMethodNotFoundInService, methodName, service.Type().String())
+		// log.Fatalf(internal.MsgMethodNotFoundInService, methodName, service.Type().String())
 	}
 
 	return methodType
