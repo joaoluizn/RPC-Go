@@ -35,16 +35,9 @@ func (n *NamingService) RegisterServices(httpRequest *http.Request) {
 
 // LookupService gets the first address on the list of addresses for the naming service given
 func (n *NamingService) LookupService(serviceName string) []byte {
-	
 	var address string
 	var entry *Entry
 	entries := ServicesNames.remoteServicesEntries[serviceName]
-
-	if len(entries) > 0 {
-		entry = entries[0]
-		address = entry.Address
-		log.Printf(internal.MsgFoundRemoteService, entry.Name, entry.Address)
-	}
 
 	return n.marshaller.MarshallLookupResponse(address)
 }
