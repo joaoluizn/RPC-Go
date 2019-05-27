@@ -30,32 +30,29 @@ func (n *NamingService) RegisterServices(httpRequest *http.Request) {
 	for index := range service_list {
 		log.Printf("%d: %s", index, service_list[index])
 		n.registerService(service_list[index])
+	}
+}
 
 // LookupService gets the first address on the list of addresses for the naming service given
-func (n *NamingService) LookupService(serviceName string) []byte {
-	
-	var address string
-	var entry *Entry
-	entries := ServicesNames.remoteServicesEntries[serviceName]
+// func (n *NamingService) LookupService(serviceName string) []byte {
+// var address string
+// var entry *Entry
+// entries := ServicesNames.remoteServicesEntries[serviceName]
 
-	if len(entries) > 0 {
-		entry = entries[0]
-		address = entry.Address
-		log.Printf(internal.MsgFoundRemoteService, entry.Name, entry.Address)
-	}
+// if len(entries) > 0 {
+// 	entry = entries[0]
+// 	address = entry.Address
+// 	log.Printf(internal.MsgFoundRemoteService, entry.Name, entry.Address)
+// }
 
-	return n.marshaller.MarshallLookupResponse(address)
-}
+// return n.marshaller.MarshallLookupResponse(address)
+// }
 
 // TODO: If really needed to keep the watcher, try to implement it with a Dialer using server addr.
 
 // registerService registers a new service that is available for clients
 func (n *NamingService) registerService(service *network.Service) {
-	// n.makeEntriesList(service.Name)
-
 	serviceName := service.Name
-	// serviceAddr := service.Address
-
 	_, nameExists := n.registeredRemoteServices[service.Name]
 
 	if !nameExists {
@@ -73,10 +70,17 @@ func (n *NamingService) registerService(service *network.Service) {
 	// 	entries := n.remoteServicesEntries[entry.Name]
 	// 	n.remoteServicesEntries[entry.Name] = append(entries, entry)
 	// 	n.status()
-
 	// }
 }
 
 func (n *NamingService) showRegisteredServices() {
-	// Print registered services
+	servicesNames := make([]string, 0)
+	mapAddrs := make(map[string]string)
+
+	for key := range n.registeredRemoteServices {
+		servicesNames = append(servicesNames, key)
+		service := n.registeredRemoteServices[key]
+		mapAddrs[key] = service.Address
+	}
+	log.Printf("Registered Services: #%d service(s): %s. Addresses: %s", len(servicesNames), servicesNames, mapAddrs)
 }
