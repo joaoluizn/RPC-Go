@@ -31,28 +31,30 @@ func (n *NamingService) RegisterServices(httpRequest *http.Request) {
 		log.Printf("%d: %s", index, service_list[index])
 		n.registerService(service_list[index])
 
-// LookupService gets the first address on the list of addresses for the naming service given
+// LookupService gets the first response  for the naming service given
 func (n *NamingService) LookupService(serviceName string) []byte {
 	
-	var address string
-	var entry *Entry
-	entries := ServicesNames.remoteServicesEntries[serviceName]
+	var reponse string
+	serviceName, nameExists = n.registeredRemoteServices[serviceName]
 
-	if len(entries) > 0 {
-		entry = entries[0]
-		address = entry.Address
-		log.Printf(internal.MsgFoundRemoteService, entry.Name, entry.Address)
+	if !nameExists {
+	
+		return n.marshaller.MarshallLookupResponse(response)
+
+	} else {
+	
+		response = registeredRemoteServices[serviceName].Address
+	
 	}
-
-	return n.marshaller.MarshallLookupResponse(address)
+	
+	return n.marshaller.MarshallLookupResponse(response)
 }
 
 // TODO: If really needed to keep the watcher, try to implement it with a Dialer using server addr.
 
 // registerService registers a new service that is available for clients
 func (n *NamingService) registerService(service *network.Service) {
-	// n.makeEntriesList(service.Name)
-
+	
 	serviceName := service.Name
 	// serviceAddr := service.Address
 
@@ -78,7 +80,6 @@ func (n *NamingService) registerService(service *network.Service) {
 }
 
 func (n *NamingService) showRegisteredServices() {
-	// Print registered services
+	
 
 }
-

@@ -23,4 +23,3 @@ func MakeServiceList(servicesNames []string, serverAddr string) []*Service {
 	return serviceSlice
 
 }
-

@@ -57,10 +57,3 @@ func (n *NamingServiceServer) runSocketForServicesRegistration() {
 		}
 	}
 }
-
-//LookupService gets the address for the naming service given?
-//Looks like correct, cause we're only getting a specific name from lookup and marshalling to server
-func (n *NamingService) LookupService(namingServerAddr string) []byte {
-//
-//	return n.marshaller.MarshallLookupResponse(namingServerAddr)
-//}
