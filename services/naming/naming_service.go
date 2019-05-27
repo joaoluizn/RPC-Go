@@ -24,45 +24,44 @@ type NamingService struct {
 // RegisterServices registers new services that are available for client
 func (n *NamingService) RegisterServices(httpRequest *http.Request) {
 	registrationReq := n.marshaller.UnmarshalNamingServiceRegistration(httpRequest)
-	log.Printf("Register Request Received from: %s", registrationReq.ServerAddress)
+	log.Printf("Register Request Received from: %s\n", registrationReq.ServerAddress)
 	service_list := network.MakeServiceList(registrationReq.ServicesNames, registrationReq.ServerAddress)
 
 	for index := range service_list {
-		log.Printf("%d: %s", index, service_list[index])
 		n.registerService(service_list[index])
 	}
 }
 
-// LookupService gets the first address on the list of addresses for the naming service given
-// func (n *NamingService) LookupService(serviceName string) []byte {
-// var address string
-// var entry *Entry
-// entries := ServicesNames.remoteServicesEntries[serviceName]
+// LookupService gets the first response  for the naming service given
+func (n *NamingService) LookupService(serviceName string) []byte {
+	var response string
 
-// if len(entries) > 0 {
-// 	entry = entries[0]
-// 	address = entry.Address
-// 	log.Printf(internal.MsgFoundRemoteService, entry.Name, entry.Address)
-// }
+	log.Printf("Looking up for service: '%s'\n", serviceName)
+	_, nameExists := n.registeredRemoteServices[serviceName]
 
-// return n.marshaller.MarshallLookupResponse(address)
-// }
+	if !nameExists {
+		return n.marshaller.MarshallLookupResponse(response)
+	} else {
+		response = n.registeredRemoteServices[serviceName].Address
+	}
+
+	return n.marshaller.MarshallLookupResponse(response)
+}
 
 // TODO: If really needed to keep the watcher, try to implement it with a Dialer using server addr.
-
 // registerService registers a new service that is available for clients
 func (n *NamingService) registerService(service *network.Service) {
 	serviceName := service.Name
+	serviceAddr := service.Address
 	_, nameExists := n.registeredRemoteServices[service.Name]
 
 	if !nameExists {
-		log.Printf("Service '%s' doesnt exist", serviceName)
+		log.Printf("Service: '%s' IP: '%s' Status: Register Complete\n", serviceName, serviceAddr)
 		n.registeredRemoteServices[serviceName] = service
 		n.showRegisteredServices()
 		// 	go n.watchRemoteService(entry)
-
 	} else {
-		// implement here routine to adding a service that already exist.
+		// TODO: implement here routine to adding a service that already exist.
 	}
 
 	// if !n.addressExists(entry.Name, entry.Address) {
@@ -82,5 +81,5 @@ func (n *NamingService) showRegisteredServices() {
 		service := n.registeredRemoteServices[key]
 		mapAddrs[key] = service.Address
 	}
-	log.Printf("Registered Services: #%d service(s): %s. Addresses: %s", len(servicesNames), servicesNames, mapAddrs)
+	log.Printf("(NamingServerStatus)> Registered Services: #%d service(s): %s. Addresses: %s\n\n", len(servicesNames), servicesNames, mapAddrs)
 }

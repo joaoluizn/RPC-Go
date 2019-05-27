@@ -33,6 +33,7 @@ func (n *NamingServiceServer) Run() {
 // runHTTPServerForServiceLookup runs a http server for remote services look-up
 func (n *NamingServiceServer) runHTTPServerForServiceLookup() {
 	defer n.listener.Close()
+	log.Printf("Running Lookup Endpoint on %s\n\n", n.namnigServerAddr)
 
 	// Mapping lookup route to NameRequestHandler
 	http.HandleFunc("/lookup/", n.requestHandler.HandleLookupServices)

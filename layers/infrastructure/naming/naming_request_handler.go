@@ -25,7 +25,7 @@ type NamingServiceRequestHandler struct {
 // HandleLookupServices handles client's look-up requests for available remote services
 func (n *NamingServiceRequestHandler) HandleLookupServices(writer http.ResponseWriter, request *http.Request) {
 	serviceName := request.URL.EscapedPath()[len("/lookup/"):]
-	log.Printf("Receiving Lookup Request ", serviceName)
+	log.Printf("Lookup for service: '%s'.", serviceName)
 	addressBytes := n.namingService.LookupService(serviceName)
 	writer.Header().Set("Content-Type", "service/json; charset=utf-8")
 	writer.Write(addressBytes)
