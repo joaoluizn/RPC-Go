@@ -26,33 +26,15 @@ func (n *NamingServiceRequestHandler) HandleLookupServices(writer http.ResponseW
 	// log.Printf("Receiving Lookup Request ", serviceName)
 
 	serviceName := request.URL.EscapedPath()[len("/lookup/"):]
-	// addressBytes := n.namingService.LookupService(serviceName)
+	//addressBytes := n.namingService.LookupService(serviceName)
 	writer.Header().Set("Content-Type", "service/json; charset=utf-8")
-	writer.Write(n.marshaller.MarshallLookupResponse(serviceName))
+	writer.Write(addressBytes)
+
 }
-
-// func (n *NamingServiceRequestHandler) HandleRegisterServices(connection net.Conn, writer http.ResponseWriter, request *http.Request) {
-// 	log.Printf("Receiving Register Request from ", request.RemoteAddr)
-// 	// n.namingService.RegisterServices(connection)
-// 	log.Printf("Cheguei ate aqui!")
-// }
-
-// HandleRegistrationServices handles remote services registration requests
-// func (n *NamingServiceRequestHandler) HandleRegistrationServices(registerData string) {
-// 	log.Printf("register: " + registerData)
-// 	// n.namingService.RegisterServices(connection)
-// }
 
 func (r *NamingServiceRequestHandler) HandleRegistrationServices(writer http.ResponseWriter, request *http.Request) {
 	r.namingService.RegisterServices(request)
 
-	// r.marshaller.UnmarshalNamingServiceRegistration(request.Body)
-	// body, err := ioutil.ReadAll(request.Body)
-	// if err != nil {
-	// 	log.Fatalln(err)
-	// }
-
-	// log.Println(string(body))
-	// writer.Header().Set("Content-Type", "service/json; charset=utf-8")
-	// writer.Write(output)
+	//writer.Header().Set("Content-Type", "service/json; charset=utf-8")
+	//writer.Write(output)
 }
