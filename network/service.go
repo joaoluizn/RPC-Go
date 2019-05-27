@@ -13,11 +13,12 @@ type Service struct {
 }
 
 func MakeServiceList(servicesNames []string, serverAddr string) []*Service {
-	serviceList := make([]*Service, 0)
+	// Create service slice
+	serviceSlice := make([]*Service, 0)
 
 	for index := range servicesNames {
 		service := NewService(servicesNames[index], serverAddr)
-		serviceList = append(serviceList, service)
+		serviceSlice = append(serviceSlice, service)
 	}
-	return serviceList
+	return serviceSlice
 }
