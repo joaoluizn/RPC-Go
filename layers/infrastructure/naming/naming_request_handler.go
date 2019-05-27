@@ -1,6 +1,7 @@
 package naming
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/joaoluizn/RPC-go/network"
@@ -23,10 +24,9 @@ type NamingServiceRequestHandler struct {
 
 // HandleLookupServices handles client's look-up requests for available remote services
 func (n *NamingServiceRequestHandler) HandleLookupServices(writer http.ResponseWriter, request *http.Request) {
-	// log.Printf("Receiving Lookup Request ", serviceName)
-
 	serviceName := request.URL.EscapedPath()[len("/lookup/"):]
-	//addressBytes := n.namingService.LookupService(serviceName)
+	log.Printf("Receiving Lookup Request ", serviceName)
+	addressBytes := n.namingService.LookupService(serviceName)
 	writer.Header().Set("Content-Type", "service/json; charset=utf-8")
 	writer.Write(addressBytes)
 

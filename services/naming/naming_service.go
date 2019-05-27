@@ -79,4 +79,6 @@ func (n *NamingService) registerService(service *network.Service) {
 
 func (n *NamingService) showRegisteredServices() {
 	// Print registered services
+
 }
+

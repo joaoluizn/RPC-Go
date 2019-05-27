@@ -21,4 +21,6 @@ func MakeServiceList(servicesNames []string, serverAddr string) []*Service {
 		serviceSlice = append(serviceSlice, service)
 	}
 	return serviceSlice
+
 }
+

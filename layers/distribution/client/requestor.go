@@ -44,7 +44,7 @@ func (r *Requestor) send(remoteServiceAddress string, requestData *bytes.Buffer)
 	return serverResponse
 }
 
-/// marshall: Serializes an invoke request into a bytes buffer;
+// marshall: Serializes an invoke request into a bytes buffer;
 func (r *Requestor) marshall(serviceName string, methodName string, args []interface{}) *bytes.Buffer {
 	clientRequest := network.NewClientRequest(serviceName, methodName, args)
 	return r.marshaller.MarshallClientRequest(clientRequest)
