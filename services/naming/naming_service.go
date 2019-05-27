@@ -24,15 +24,27 @@ type NamingService struct {
 // RegisterServices registers new services that are available for client
 func (n *NamingService) RegisterServices(httpRequest *http.Request) {
 	registrationReq := n.marshaller.UnmarshalNamingServiceRegistration(httpRequest)
-
 	log.Printf("Register Request Received from: %s", registrationReq.ServerAddress)
-
 	service_list := network.MakeServiceList(registrationReq.ServicesNames, registrationReq.ServerAddress)
 
 	for index := range service_list {
 		log.Printf("%d: %s", index, service_list[index])
 		n.registerService(service_list[index])
+
+// LookupService gets the first address on the list of addresses for the naming service given
+func (n *NamingService) LookupService(serviceName string) []byte {
+	
+	var address string
+	var entry *Entry
+	entries := ServicesNames.remoteServicesEntries[serviceName]
+
+	if len(entries) > 0 {
+		entry = entries[0]
+		address = entry.Address
+		log.Printf(internal.MsgFoundRemoteService, entry.Name, entry.Address)
 	}
+
+	return n.marshaller.MarshallLookupResponse(address)
 }
 
 // TODO: If really needed to keep the watcher, try to implement it with a Dialer using server addr.
