@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/joaoluizn/RPC-go/network/structs"
 )
 
 // NewMarshaller build new instance of marshaller
@@ -13,7 +15,7 @@ func NewMarshaller() *Marshaller {
 	return &Marshaller{}
 }
 
-// Marshaller handles request / response data serialization and deserialization
+// Marshaller handles frequest / response data serialization and deserialization
 type Marshaller struct {
 }
 
@@ -28,6 +30,18 @@ func (m *Marshaller) UnmarshallLookupResponse(httpResponse *http.Response) strin
 	json.Unmarshal(body, &content)
 
 	return content
+}
+
+func (m *Marshaller) UnmarshalClientInvokeRequest(htttpRequest *http.Request) *structs.ClientInvoke {
+	body, err := ioutil.ReadAll(htttpRequest.Body)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	var invokeRequest *structs.ClientInvoke
+	json.Unmarshal(body, &invokeRequest)
+
+	return invokeRequest
 }
 
 func (m *Marshaller) MarshallLookupResponse(address string) []byte {
@@ -83,4 +97,14 @@ func (m *Marshaller) UnmarshalNamingServiceRegistration(httpRequest *http.Reques
 
 	json.Unmarshal(body, &registrationRequest)
 	return &registrationRequest
+}
+
+// MarshalClientResponse serializes a response
+func (m *Marshaller) MarshalClientResponse(response interface{}) []byte {
+	responseByte, err := json.Marshal(response)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	return responseByte
 }
