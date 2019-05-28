@@ -22,6 +22,3 @@ func GetTCPDialer(address string) *net.TCPConn {
 	return dialer
 
 }
-func buildAddress(ip string, port string) string {
-	return ip + ":" + port
-}

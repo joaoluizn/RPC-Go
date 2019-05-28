@@ -25,7 +25,7 @@ type NamingServiceServer struct {
 }
 
 // Run runs the naming service
-func (n *NamingServiceServer) Run() {
+func (n *NamingServiceServer) RunNamingServer() {
 	go n.runHTTPServerForServiceLookup()
 	n.runSocketForServicesRegistration()
 }
@@ -35,12 +35,11 @@ func (n *NamingServiceServer) runHTTPServerForServiceLookup() {
 	defer n.listener.Close()
 	log.Printf("Running Lookup Endpoint on %s\n\n", n.namnigServerAddr)
 
-	// Mapping lookup route to NameRequestHandler
 	http.HandleFunc("/lookup/", n.requestHandler.HandleLookupServices)
 
-	serve_err := http.Serve(n.listener, nil)
-	if serve_err != nil {
-		log.Fatal(serve_err.Error())
+	serveErr := http.Serve(n.listener, nil)
+	if serveErr != nil {
+		log.Fatal(serveErr.Error())
 	}
 }
 
@@ -52,9 +51,9 @@ func (n *NamingServiceServer) runSocketForServicesRegistration() {
 	for {
 		http.HandleFunc("/register/", n.requestHandler.HandleRegistrationServices)
 
-		serve_err := http.Serve(n.listener, nil)
-		if serve_err != nil {
-			log.Fatal(serve_err.Error())
+		serveErr := http.Serve(n.listener, nil)
+		if serveErr != nil {
+			log.Fatal(serveErr.Error())
 		}
 	}
 }

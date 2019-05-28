@@ -33,7 +33,7 @@ func (n *NamingServiceRequestHandler) HandleLookupServices(writer http.ResponseW
 
 func (r *NamingServiceRequestHandler) HandleRegistrationServices(writer http.ResponseWriter, request *http.Request) {
 	r.namingService.RegisterServices(request)
-
+	// TODO: Resolve Procedure existent
 	//writer.Header().Set("Content-Type", "service/json; charset=utf-8")
 	//writer.Write(output)
 }

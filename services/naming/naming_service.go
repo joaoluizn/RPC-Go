@@ -48,7 +48,6 @@ func (n *NamingService) LookupService(serviceName string) []byte {
 	return n.marshaller.MarshallLookupResponse(response)
 }
 
-// TODO: If really needed to keep the watcher, try to implement it with a Dialer using server addr.
 // registerService registers a new service that is available for clients
 func (n *NamingService) registerService(service *network.Service) {
 	serviceName := service.Name
@@ -59,7 +58,6 @@ func (n *NamingService) registerService(service *network.Service) {
 		log.Printf("Service: '%s' IP: '%s' Status: Register Complete\n", serviceName, serviceAddr)
 		n.registeredRemoteServices[serviceName] = service
 		n.showRegisteredServices()
-		// 	go n.watchRemoteService(entry)
 	} else {
 		// TODO: implement here routine to adding a service that already exist.
 	}

@@ -1,6 +1,7 @@
 package storage
 
 const (
+	// StorageServiceName Storage Service Name to access remote procedure
 	StorageServiceName = "Storage"
 )
 

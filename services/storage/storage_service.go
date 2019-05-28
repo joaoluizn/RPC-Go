@@ -12,7 +12,7 @@ import (
 // NewRemoteService builds a new instance of RemoteService
 func NewRemoteService() *RemoteService {
 	return &RemoteService{
-		// All operations that Storage Service contains
+		// All services that this remote server contains.
 		services:   make(map[string]interface{}),
 		marshaller: network.NewMarshaller(),
 		clientHttp: &http.Client{
@@ -49,18 +49,14 @@ func (r *RemoteService) getServicesNames() []string {
 
 // SaveServicesToNamingService binds services on naming service server
 func (r *RemoteService) SaveServicesToNamingService(serviceAddr string, namingServerAddr string) {
-	// dialer := network.GetTCPDialer(namingServerAddr)
-	// defer dialer.Close()
+	// Get all Services for this Remote Server
+	servicesNames := r.getServicesNames()
 
-	// Get all Storage Operations
-	names := r.getServicesNames()
-	// log.Printf(internal.MsgRegisteringService, names, address)
-
-	namingServiceRegistration := network.NewNamingServiceRegistration(names, serviceAddr)
+	namingServiceRegistration := network.NewNamingServiceRegistration(servicesNames, serviceAddr)
 	namingServiceRegistrationBytes := r.marshaller.MarshalNamingServiceRegistration(namingServiceRegistration)
 
+	log.Printf("Registering Services: %s ~from: %s\n\n", servicesNames, serviceAddr)
 	r.Register(namingServerAddr, namingServiceRegistrationBytes)
-	// WatchNamingService(dialer)
 }
 
 // Send sends a invoke request to remote service

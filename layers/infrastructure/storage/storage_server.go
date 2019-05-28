@@ -24,7 +24,7 @@ type StorageServiceServer struct {
 }
 
 // Run runs the remote service
-func (r *StorageServiceServer) Run() {
+func (r *StorageServiceServer) RunRemoteServer() {
 	listener := network.GetTCPListener(r.storageServerAddr)
 	r.bindServicesToNamingService(r.storageServerAddr)
 	r.runHTTPServerForServicesInvocation(listener, r.storageServerAddr)
@@ -36,8 +36,9 @@ func (r *StorageServiceServer) RegisterServiceInLocalStorage(name string, instan
 }
 
 // runHTTPServerForServicesInvocation brings up the http server that handles services invoke requests
-func (r *StorageServiceServer) runHTTPServerForServicesInvocation(listener net.Listener, address string) {
-	// log.Printf(internal.MsgRunningServicesInvoke, address)
+func (r *StorageServiceServer) runHTTPServerForServicesInvocation(listener net.Listener, storageServerAddr string) {
+	log.Printf("Running Storage Remote Server on: %s\n\n", storageServerAddr)
+
 	http.HandleFunc("/invoke/", r.requestHandler.HandleInvokeRequest)
 
 	errServe := http.Serve(listener, nil)

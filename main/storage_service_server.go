@@ -20,5 +20,5 @@ func main() {
 	// There could be many services, so one register line for each service in that remote IP
 	remoteServiceServer.RegisterServiceInLocalStorage(storage.StorageServiceName, storage.NewStorage())
 
-	remoteServiceServer.Run()
+	remoteServiceServer.RunRemoteServer()
 }
