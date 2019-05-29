@@ -56,7 +56,8 @@ func (r *RemoteService) SaveServicesToNamingService(serviceAddr string, namingSe
 	namingServiceRegistrationBytes := r.marshaller.MarshalNamingServiceRegistration(namingServiceRegistration)
 
 	log.Printf("Registering Services: %s ~from: %s\n\n", servicesNames, serviceAddr)
-	r.Register(namingServerAddr, namingServiceRegistrationBytes)
+	response := r.Register(namingServerAddr, namingServiceRegistrationBytes)
+	log.Printf("Name Service Bind Status: %s", response)
 }
 
 // Send sends a invoke request to remote service

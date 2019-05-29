@@ -64,7 +64,6 @@ func (i *Invoker) getMethod(service reflect.Value, methodName string) reflect.Va
 	return methodType
 }
 
-// TODO: Add support to more types
 // getArguments converts the arguments to their correct types for the method given
 func (i *Invoker) getArguments(method reflect.Value, args []interface{}) []reflect.Value {
 	argsValue := make([]reflect.Value, len(args))

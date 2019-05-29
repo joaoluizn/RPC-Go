@@ -23,12 +23,13 @@ type NamingService struct {
 
 // RegisterServices registers new services that are available for client
 func (n *NamingService) RegisterServices(httpRequest *http.Request) {
+	response := make([]string, 0)
 	registrationReq := n.marshaller.UnmarshalNamingServiceRegistration(httpRequest)
 	log.Printf("Register Request Received from: %s\n", registrationReq.ServerAddress)
 	service_list := network.MakeServiceList(registrationReq.ServicesNames, registrationReq.ServerAddress)
 
 	for index := range service_list {
-		n.registerService(service_list[index])
+		response = append(response, n.registerService(service_list[index]))
 	}
 }
 

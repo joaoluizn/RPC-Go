@@ -21,6 +21,15 @@ type Marshaller struct {
 
 // Naming Service Marshaller
 // UnmarshallLookupResponse: Deserializes Naming Service Server Response;
+func (m *Marshaller) MarshallLookupResponse(address string) []byte {
+	addressBytes, err := json.Marshal(address)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+
+	return addressBytes
+}
+
 func (m *Marshaller) UnmarshallLookupResponse(httpResponse *http.Response) string {
 	body, err := ioutil.ReadAll(httpResponse.Body)
 	if err != nil {
@@ -44,16 +53,6 @@ func (m *Marshaller) UnmarshalClientInvokeRequest(htttpRequest *http.Request) *s
 	return invokeRequest
 }
 
-func (m *Marshaller) MarshallLookupResponse(address string) []byte {
-	addressBytes, err := json.Marshal(address)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-
-	return addressBytes
-}
-
-// Client Marshaller
 // MarshallClientRequest: Serializes a client request;
 func (m *Marshaller) MarshallClientRequest(clientInvokeRequest *ClientRequest) *bytes.Buffer {
 	requestBytes, err := json.Marshal(clientInvokeRequest)
