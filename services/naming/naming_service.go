@@ -59,8 +59,17 @@ func (n *NamingService) registerService(service *network.Service) {
 		log.Printf("Service: '%s' IP: '%s' Status: Register Complete\n", serviceName, serviceAddr)
 		n.registeredRemoteServices[serviceName] = service
 		n.showRegisteredServices()
+
+		return
 	} else {
+		if n.registeredRemoteServices[serviceName].Address == service.Address {
+			log.Printf("Service: %s of IP: %s is already registered", serviceName, serviceAddr)
+		} else {
+			log.Printf("Service: %s is already registered by another Address", serviceName)
+		}
+
 		// TODO: implement here routine to adding a service that already exist.
+
 	}
 
 	// if !n.addressExists(entry.Name, entry.Address) {
