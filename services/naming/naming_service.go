@@ -1,6 +1,7 @@
 package naming
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -22,14 +23,17 @@ type NamingService struct {
 }
 
 // RegisterServices registers new services that are available for client
-func (n *NamingService) RegisterServices(httpRequest *http.Request) {
+func (n *NamingService) RegisterServices(httpRequest *http.Request) []byte {
+	response := make([]string, 0)
 	registrationReq := n.marshaller.UnmarshalNamingServiceRegistration(httpRequest)
 	log.Printf("Register Request Received from: %s\n", registrationReq.ServerAddress)
 	service_list := network.MakeServiceList(registrationReq.ServicesNames, registrationReq.ServerAddress)
 
 	for index := range service_list {
-		n.registerService(service_list[index])
+		response = append(response, n.registerService(service_list[index]))
 	}
+
+	return n.marshaller.MarshallRegistrationResponse(response)
 }
 
 // LookupService gets the first response  for the naming service given
@@ -49,25 +53,27 @@ func (n *NamingService) LookupService(serviceName string) []byte {
 }
 
 // registerService registers a new service that is available for clients
-func (n *NamingService) registerService(service *network.Service) {
+func (n *NamingService) registerService(service *network.Service) string {
+	var response string
+
 	serviceName := service.Name
 	serviceAddr := service.Address
 	_, nameExists := n.registeredRemoteServices[service.Name]
 
 	if !nameExists {
-		log.Printf("Service: '%s' IP: '%s' Status: Register Complete\n", serviceName, serviceAddr)
 		n.registeredRemoteServices[serviceName] = service
 		n.showRegisteredServices()
+
+		response = fmt.Sprintf("Service: '%s' IP: '%s' Status: Register Complete\n", serviceName, serviceAddr)
 	} else {
-		// TODO: implement here routine to adding a service that already exist.
+		if n.registeredRemoteServices[serviceName].Address == service.Address {
+			response = fmt.Sprintf("Service: %s of IP: %s is already registered\n", serviceName, serviceAddr)
+		} else {
+			response = fmt.Sprintf("Service: %s is already registered by another Address\n", serviceName)
+		}
 	}
 
-	// if !n.addressExists(entry.Name, entry.Address) {
-	// 	log.Printf(internal.MsgRegisteringService, entry.Name, entry.Address)
-	// 	entries := n.remoteServicesEntries[entry.Name]
-	// 	n.remoteServicesEntries[entry.Name] = append(entries, entry)
-	// 	n.status()
-	// }
+	return response
 }
 
 func (n *NamingService) showRegisteredServices() {
