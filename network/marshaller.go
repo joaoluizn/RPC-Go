@@ -41,6 +41,25 @@ func (m *Marshaller) UnmarshallLookupResponse(httpResponse *http.Response) strin
 	return content
 }
 
+func (m *Marshaller) MarshallRegistrationResponse(messages []string) []byte {
+	messagesBytes, err := json.Marshal(messages)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	return messagesBytes
+}
+
+func (m *Marshaller) UnMarshallRegistrationResponse(httpResponse *http.Response) []string {
+	body, err := ioutil.ReadAll(httpResponse.Body)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	var content []string
+	json.Unmarshal(body, &content)
+
+	return content
+}
+
 func (m *Marshaller) UnmarshalClientInvokeRequest(htttpRequest *http.Request) *structs.ClientInvoke {
 	body, err := ioutil.ReadAll(htttpRequest.Body)
 	if err != nil {

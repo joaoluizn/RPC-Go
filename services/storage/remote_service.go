@@ -57,11 +57,13 @@ func (r *RemoteService) SaveServicesToNamingService(serviceAddr string, namingSe
 
 	log.Printf("Registering Services: %s ~from: %s\n\n", servicesNames, serviceAddr)
 	response := r.Register(namingServerAddr, namingServiceRegistrationBytes)
-	log.Printf("Name Service Bind Status: %s", response)
+	for index := range response {
+		log.Printf("ServiceRegistrationStatus: %s", response[index])
+	}
 }
 
 // Send sends a invoke request to remote service
-func (r *RemoteService) Register(namingServerAddr string, request *bytes.Buffer) *http.Response {
+func (r *RemoteService) Register(namingServerAddr string, request *bytes.Buffer) []string {
 	response, err := r.clientHttp.Post(
 		// URL
 		"http://"+namingServerAddr+"/register/",
@@ -74,5 +76,5 @@ func (r *RemoteService) Register(namingServerAddr string, request *bytes.Buffer)
 		log.Fatal("storage_service (Register): ", err.Error())
 	}
 
-	return response
+	return r.marshaller.UnMarshallRegistrationResponse(response)
 }
