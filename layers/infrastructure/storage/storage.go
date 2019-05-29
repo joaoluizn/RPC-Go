@@ -1,5 +1,18 @@
 package storage
 
+import(
+	"log"
+	"fmt"
+)
+
+type Product struct {
+	Id 		int
+	Name    string
+	Price   int 
+}
+
+type Storage struct{}
+
 const (
 	// StorageServiceName Storage Service Name to access remote procedure
 	StorageServiceName = "Storage"
@@ -9,13 +22,26 @@ func NewStorage() *Storage {
 	return &Storage{}
 }
 
-type Storage struct{}
+func PrintProductList() {
+	for i := 0; i < productsIndex; i++ {
+		fmt.Printf("%d %s %d\n", products[i].Id, products[i].Name, products[i].Price)
+	}
+	fmt.Printf("%d\n", productsIndex)
+}
 
-func (s Storage) HelloStorage() string {
+var products [4]Product
+var productsIndex = 0
+
+func (s Storage) HelloStorage(args string, args2 string) string {
+	log.Println(args, args2)
 	return "A Hello message from Storage!\n"
 }
 
-func (s Storage) Create() string {
+func (s Storage) Create(name string, price int) string {
+	products[productsIndex] = Product{Id: productsIndex, Name: name, Price: price}
+	productsIndex++
+	
+	PrintProductList()
 	return "Create Function\n"
 }
 

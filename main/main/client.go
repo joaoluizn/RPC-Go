@@ -28,9 +28,9 @@ func main() {
 	storageClient := client.NewClientProxy(namingServerAddr, StorageServiceName)
 
 	// Calling a Remote Procedure
-	log.Printf("Calling Remote Procedure: '%s'", HelloStorage)
+	log.Printf("Calling Remote Procedure: '%s'", CreateObject)
 
-	helloResponse := storageClient.Invoke(HelloStorage)
+	helloResponse := storageClient.Invoke(CreateObject, "teste", 20)
 	log.Printf("Response: %s", helloResponse.Content[0])
 
 	// This Invoke can receive the operation to be executed and arguments needed.

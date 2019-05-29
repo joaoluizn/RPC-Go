@@ -72,7 +72,7 @@ func (i *Invoker) getArguments(method reflect.Value, args []interface{}) []refle
 	for index := range argsValue {
 		arg := args[index]
 		var newArg interface{}
-
+		
 		switch method.Type().In(index).Kind() {
 		case reflect.Int:
 			// Any numeric type from request is automatically converted to float64
@@ -83,7 +83,6 @@ func (i *Invoker) getArguments(method reflect.Value, args []interface{}) []refle
 			newArg = arg.(string)
 		case reflect.Slice:
 			newArg = arg
-
 		}
 
 		argsValue[index] = reflect.ValueOf(newArg)
