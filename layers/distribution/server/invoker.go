@@ -47,7 +47,7 @@ func (i *Invoker) invoke(clientInvoke *structs.ClientInvoke) interface{} {
 func (i *Invoker) getService(serviceName string) reflect.Value {
 	serviceValue := reflect.ValueOf(i.RemoteService.GetService(serviceName))
 	if !serviceValue.IsValid() {
-		log.Fatalf("%s was not found", serviceName)
+		log.Fatalf("Could not find Service: '%s'", serviceName)
 	}
 
 	return serviceValue
@@ -55,13 +55,13 @@ func (i *Invoker) getService(serviceName string) reflect.Value {
 
 // getMethod gets the method requested
 func (i *Invoker) getMethod(service reflect.Value, methodName string) reflect.Value {
-	methodType := service.MethodByName(methodName)
+	methodReflectionValue := service.MethodByName(methodName)
 
-	if !methodType.IsValid() {
-		log.Fatalf("%s was not found in %s", methodName, service.Type().String())
+	if !methodReflectionValue.IsValid() {
+		log.Fatalf("Could not find Method: '%s' in Service: '%s'", methodName, service.Type().String())
 	}
 
-	return methodType
+	return methodReflectionValue
 }
 
 // TODO: Add support to more types
@@ -72,7 +72,7 @@ func (i *Invoker) getArguments(method reflect.Value, args []interface{}) []refle
 	for index := range argsValue {
 		arg := args[index]
 		var newArg interface{}
-		
+
 		switch method.Type().In(index).Kind() {
 		case reflect.Int:
 			// Any numeric type from request is automatically converted to float64

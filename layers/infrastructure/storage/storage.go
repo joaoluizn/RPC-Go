@@ -1,14 +1,14 @@
 package storage
 
-import(
-	"log"
+import (
 	"fmt"
+	"log"
 )
 
 type Product struct {
-	Id 		int
-	Name    string
-	Price   int 
+	Id    int
+	Name  string
+	Price int
 }
 
 type Storage struct{}
@@ -40,7 +40,7 @@ func (s Storage) HelloStorage(args string, args2 string) string {
 func (s Storage) Create(name string, price int) string {
 	products[productsIndex] = Product{Id: productsIndex, Name: name, Price: price}
 	productsIndex++
-	
+
 	PrintProductList()
 	return "Create Function\n"
 }
@@ -56,3 +56,5 @@ func (s Storage) Update() string {
 func (s Storage) Delete() string {
 	return "Delete Function\n"
 }
+
+//aqui teria que ter uma função GetMethod
