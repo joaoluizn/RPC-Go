@@ -47,6 +47,7 @@ func (n *NamingService) LookupService(serviceName string) []byte {
 		return n.marshaller.MarshallLookupResponse(response)
 	} else {
 		response = n.registeredRemoteServices[serviceName].Address
+
 	}
 
 	return n.marshaller.MarshallLookupResponse(response)

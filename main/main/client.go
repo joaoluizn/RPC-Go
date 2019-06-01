@@ -24,15 +24,18 @@ func main() {
 	namingServerAddr := fmt.Sprintf("%s:%s", namingServerHost, namingServerPort)
 
 	// Creating ClientProxy to call Remote Procedures
-
 	storageClient := client.NewClientProxy(namingServerAddr, StorageServiceName)
 
 	// Calling a Remote Procedure
 	log.Printf("Calling Remote Procedure: '%s'", CreateObject)
 
+	// This Invoke can receive the operation to be executed and arguments needed
 	helloResponse := storageClient.Invoke(CreateObject, "teste", 20)
+
+	// createResponse := storageClient.Invoke(CreateStorage, args)
 	log.Printf("Response: %s", helloResponse.Content[0])
 
-	// This Invoke can receive the operation to be executed and arguments needed.
-	// createResponse := storageClient.Invoke(CreateStorage, args)
+	log.Printf("Calling Remote Procedure: '%s'", CreateObject)
+	helloResponse_2 := storageClient.Invoke(CreateObject, "teste", 20)
+	log.Printf("Response: %s", helloResponse_2.Content[0])
 }

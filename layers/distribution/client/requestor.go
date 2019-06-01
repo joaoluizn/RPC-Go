@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/joaoluizn/RPC-go/layers/infrastructure/client"
+	infrastructure "github.com/joaoluizn/RPC-go/layers/infrastructure/pool"
 	"github.com/joaoluizn/RPC-go/network"
 )
 
@@ -14,6 +15,7 @@ func NewRequestor(namingServerAddress string) *Requestor {
 		namingServerAddress: namingServerAddress,
 		requestHandler:      client.NewClientRequestHandler(),
 		marshaller:          network.NewMarshaller(),
+		namingPool:          infrastructure.NewNamingPool(10),
 	}
 }
 
@@ -22,13 +24,19 @@ type Requestor struct {
 	namingServerAddress string
 	requestHandler      *client.ClientRequestHandler
 	marshaller          *network.Marshaller
+	namingPool          *infrastructure.NamingPool
 }
 
 // Invoke: Run desired method on remote server;
 func (r *Requestor) Invoke(serviceName string, methodName string, args []interface{}) network.Response {
-	remoteServiceAddress := r.lookup(serviceName)
+
+	serviceAddress := r.find(serviceName)
+	if serviceAddress == "" {
+		serviceAddress = r.lookup(serviceName)
+		r.putServiceInNamingPool(serviceName, serviceAddress)
+	}
 	bytesRequestData := r.marshall(serviceName, methodName, args)
-	serverResponse := r.send(remoteServiceAddress, bytesRequestData)
+	serverResponse := r.send(serviceAddress, bytesRequestData)
 	return r.unmarshall(serverResponse)
 }
 
@@ -54,4 +62,13 @@ func (r *Requestor) marshall(serviceName string, methodName string, args []inter
 func (r *Requestor) unmarshall(serverResponse *http.Response) network.Response {
 	clientResponse := r.marshaller.UnmarshallClientResponse(serverResponse)
 	return clientResponse
+}
+
+func (r *Requestor) find(serviceName string) string {
+	response := r.namingPool.Find(serviceName)
+	return response
+}
+
+func (r *Requestor) putServiceInNamingPool(serviceName string, serviceAddress string) {
+	r.namingPool.PutServiceInNamingPool(serviceName, serviceAddress)
 }
