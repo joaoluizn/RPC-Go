@@ -22,7 +22,7 @@ const (
 	StorageServiceName = "Storage"
 )
 
-var products [4]Product
+var products [100]Product
 var productsIndex = 0
 
 func PrintProductList() {
@@ -64,7 +64,7 @@ func (s Storage) ReadItem() string {
 
 func (s Storage) Update() string {
 	//products[productsIndex] = Product{Id: productsIndex, Name: name, Price: price}
-//
+	//
 	//Product.Id
 
 	return "Update Function\n"
@@ -81,7 +81,7 @@ func (s Storage) Delete() string {
 //func (s Storage) AddSlice( []Product) string {
 //	products[productsIndex] = Product{Id: productsIndex, Product: product}
 //	productsIndex++
-//	
+//
 //	PrintProductList()
 //	return "Create Function\n"
 //}

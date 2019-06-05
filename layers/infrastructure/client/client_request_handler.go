@@ -23,7 +23,7 @@ type ClientRequestHandler struct {
 
 // Lookup looks for a remote service address for the naming service given
 func (r *ClientRequestHandler) Lookup(namingServerAddr string, serviceName string) *http.Response {
-	log.Printf(namingServerAddr)
+	log.Printf("Looking Up in Naming Server at Address: %s", namingServerAddr)
 	response, err := r.Get(
 		// Lookup URL
 		"http://" + namingServerAddr + "/lookup/" + serviceName,

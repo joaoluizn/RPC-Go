@@ -6,6 +6,8 @@ import "log"
 func NewNamingProxy(size int) *NamingProxy {
 	return &NamingProxy{
 		ServiceBuffer: make(map[string]string, size),
+		PoolSize:      size,
+		On:            false,
 	}
 }
 
@@ -13,6 +15,7 @@ func NewNamingProxy(size int) *NamingProxy {
 type NamingProxy struct {
 	ServiceBuffer map[string]string
 	PoolSize      int
+	On            bool
 }
 
 func (p *NamingProxy) Find(serviceName string) string {

@@ -22,3 +22,7 @@ type ClientProxy struct {
 func (p *ClientProxy) Invoke(methodName string, arguments ...interface{}) network.Response {
 	return p.requestor.Invoke(p.serviceName, methodName, arguments)
 }
+
+func (p *ClientProxy) setNamingProxy(namingProxyOn bool) {
+	p.requestor.SetNamingProxy(namingProxyOn)
+}
