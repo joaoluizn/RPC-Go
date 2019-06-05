@@ -36,6 +36,10 @@ func useRemoteService(client *client.ClientProxy, numOfOps int, clientOperations
 	responses := make(chan Response, numOfOps)
 
 	go UseRemoteService(client, operations, responses)
+	go UseRemoteService(client, operations, responses)
+	go UseRemoteService(client, operations, responses)
+	go UseRemoteService(client, operations, responses)
+	go UseRemoteService(client, operations, responses)
 
 	for i := 0; i < numOfOps; i++ {
 		operations <- clientOperations[i]
@@ -49,6 +53,8 @@ func useRemoteService(client *client.ClientProxy, numOfOps int, clientOperations
 }
 
 func UseRemoteService(client *client.ClientProxy, operations <-chan Operation, responses chan<- Response) {
+
+	time.Sleep(time.Second * 2)
 
 	for op := range operations {
 		// Calling a Remote Procedure
@@ -80,8 +86,12 @@ func main() {
 	clientOperations[8] = Operation{CreateObject, 8}
 	clientOperations[9] = Operation{CreateObject, 9}
 
+	// for i := 0; i < numOfOps; i++ {
+	// 	clientOperations[i] = Operation{CreateObject, i}
+	// }
+
 	useRemoteService(storageClient, numOfOps, clientOperations)
 
-	time.Sleep(time.Second * 10)
+	time.Sleep(time.Second * 1000)
 
 }

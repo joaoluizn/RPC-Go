@@ -22,7 +22,7 @@ const (
 	StorageServiceName = "Storage"
 )
 
-var products [100]Product
+var products [10000]Product
 var productsIndex = 0
 
 func PrintProductList() {
