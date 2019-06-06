@@ -1,28 +1,16 @@
 package client
 
-import (
-	"github.com/joaoluizn/RPC-go/network"
-)
+import "github.com/joaoluizn/RPC-go/network"
 
 // NewClientProxy: Create ClientProxy instance;
 func NewClientProxy(namingServerAddress string, serviceName string) *ClientProxy {
 	return &ClientProxy{
-		requestor:   NewRequestor(namingServerAddress),
-		serviceName: serviceName,
+		workerPool:   network.NewWorkerPool(namingServerAddress),
 	}
 }
 
 // ClientProxy: Object reponsible for remote communication
 type ClientProxy struct {
-	requestor   *Requestor
-	serviceName string
+	workerPool   *network.WorkerPool
 }
 
-// Invoke: Run desired method on remote server;
-func (p *ClientProxy) Invoke(methodName string, arguments ...interface{}) network.Response {
-	return p.requestor.Invoke(p.serviceName, methodName, arguments)
-}
-
-func (p *ClientProxy) setNamingProxy(namingProxyOn bool) {
-	p.requestor.SetNamingProxy(namingProxyOn)
-}
