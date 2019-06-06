@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"reflect"
@@ -33,8 +34,8 @@ func (i *Invoker) Invoke(request *http.Request) []byte {
 
 //invoke runs method requested
 func (i *Invoker) invoke(clientInvoke *structs.ClientInvoke) interface{} {
-	log.Printf("Invoking: %s.%s(%s)",
-		clientInvoke.ServiceName, clientInvoke.MethodName, clientInvoke.Arguments,
+	log.Printf("Invoking: %s.%s(%s: R$%s)",
+		clientInvoke.ServiceName, clientInvoke.MethodName, clientInvoke.Arguments[0], fmt.Sprintf("%.2f", clientInvoke.Arguments[1]),
 	)
 	service := i.getService(clientInvoke.ServiceName)
 	method := i.getMethod(service, clientInvoke.MethodName)

@@ -1,11 +1,11 @@
 package storage
 
-import "strconv"
+import "fmt"
 
 type Product struct {
 	Id    int
 	Name  string
-	Price int
+	Price float64
 }
 
 type Storage struct {
@@ -29,7 +29,7 @@ func (s *Storage) PrintProductList() string {
 
 	response := "\n"
 	for i := 0; i <= s.productsIndex; i++ {
-		response += "Product: " + s.products[i].Name + "Price: " + strconv.Itoa(s.products[i].Price) + "\n"
+		response += "Product: " + s.products[i].Name + "Price: " + fmt.Sprint("%f", s.products[i].Price) + "\n"
 	}
 	return response
 }
@@ -44,7 +44,7 @@ func (s *Storage) PrintProductList() string {
 // 	return "A Hello message from Storage!\n"
 // }
 
-func (s *Storage) Create(name string, price int) string {
+func (s *Storage) Create(name string, price float64) string {
 
 	s.products[s.productsIndex] = Product{Id: s.productsIndex, Name: name, Price: price}
 	s.productsIndex++
@@ -63,7 +63,7 @@ func (s *Storage) ReadItem(name string) string {
 	response := ""
 	for _, p := range s.products {
 		if p.Name == name {
-			response += "Product: " + p.Name + "Price: " + strconv.Itoa(p.Price) + "\n"
+			response += "Product: " + p.Name + "Price: " + fmt.Sprintf("f%", p.Price) + "\n"
 		}
 	}
 	if response == "" {
@@ -74,7 +74,7 @@ func (s *Storage) ReadItem(name string) string {
 	}
 }
 
-func (s *Storage) Update(name string, price int) string {
+func (s *Storage) Update(name string, price float64) string {
 
 	for i, p := range s.products {
 		if p.Name == name {
