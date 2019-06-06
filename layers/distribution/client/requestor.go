@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/joaoluizn/RPC-Go/layers/infrastructure"
-	"github.com/joaoluizn/RPC-go/layers/infrastructure/client"
-	"github.com/joaoluizn/RPC-go/network"
+	"github.com/joaoluizn/RPC-Go/layers/infrastructure/client"
+	"github.com/joaoluizn/RPC-Go/network"
 )
 
 var (

@@ -45,7 +45,7 @@ func main() {
 	// 	clientOperations[i] = Operation{CreateObject, i}
 	// }
 
-	useRemoteService(storageClient, numOfOps, clientOperations)
+	storageClient.UseRemoteService(numOfOps, clientOperations)
 
 	time.Sleep(time.Second * 1000)
 

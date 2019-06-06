@@ -1,16 +1,17 @@
 package client
 
-import "github.com/joaoluizn/RPC-go/network"
-
 // NewClientProxy: Create ClientProxy instance;
 func NewClientProxy(namingServerAddress string, serviceName string) *ClientProxy {
 	return &ClientProxy{
-		workerPool:   network.NewWorkerPool(namingServerAddress),
+		workerPool: NewWorkerPool(namingServerAddress, serviceName),
 	}
 }
 
 // ClientProxy: Object reponsible for remote communication
 type ClientProxy struct {
-	workerPool   *network.WorkerPool
+	workerPool *WorkerPool
 }
 
+func (p *ClientProxy) UseRemoteService(numOfOps int, clientOperations []string) {
+	p.workerPool.useRemoteService(numOfOps, clientOperations)
+}

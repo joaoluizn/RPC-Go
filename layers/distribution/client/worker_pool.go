@@ -1,23 +1,22 @@
-package network
+package client
 
 import (
 	"log"
 	"time"
 
-	"github.com/joaoluizn/RPC-Go/layers/distribution/client"
 	"github.com/joaoluizn/RPC-Go/network"
 )
 
 func NewWorkerPool(namingServerAddress string, serviceName string) *WorkerPool {
 	return &WorkerPool{
-		requestor:   client.NewRequestor(namingServerAddress),
+		requestor:   NewRequestor(namingServerAddress),
 		serviceName: serviceName,
 	}
 }
 
 // ClientProxy: Object reponsible for remote communication
 type WorkerPool struct {
-	requestor   *client.Requestor
+	requestor   *Requestor
 	serviceName string
 }
 
@@ -33,10 +32,10 @@ type Response struct {
 
 // Invoke: Run desired method on remote server;
 func (w *WorkerPool) Invoke(methodName string, arguments ...interface{}) network.Response {
-	return w.requestor.Invoke(p.serviceName, methodName, arguments)
+	return w.requestor.Invoke(w.serviceName, methodName, arguments)
 }
 
-func useRemoteService(numOfOps int, clientOps []string) {
+func (w *WorkerPool) useRemoteService(numOfOps int, clientOps []string) {
 
 	clientOperations := make([]Operation, numOfOps)
 	for j := 0; j < numOfOps; j++ {
@@ -63,7 +62,7 @@ func useRemoteService(numOfOps int, clientOps []string) {
 	}
 }
 
-func (w *WorkerPool) UseRemoteService(client *client.ClientProxy, operations <-chan Operation, responses chan<- Response) {
+func (w *WorkerPool) UseRemoteService(operations <-chan Operation, responses chan<- Response) {
 
 	time.Sleep(time.Second * 2)
 
