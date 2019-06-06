@@ -2,7 +2,6 @@ package client
 
 import (
 	"log"
-	"time"
 
 	"github.com/joaoluizn/RPC-Go/network"
 )
@@ -23,6 +22,8 @@ type WorkerPool struct {
 type Operation struct {
 	operationName string
 	operationId   int
+	args1         interface{}
+	args2         interface{}
 }
 
 type Response struct {
@@ -31,15 +32,16 @@ type Response struct {
 }
 
 // Invoke: Run desired method on remote server;
-func (w *WorkerPool) Invoke(methodName string, arguments ...interface{}) network.Response {
-	return w.requestor.Invoke(w.serviceName, methodName, arguments)
+func (w *WorkerPool) Invoke(operation Operation) network.Response {
+	return w.requestor.Invoke(w.serviceName, operation.operationName, operation.args1, operation.args2)
 }
 
-func (w *WorkerPool) useRemoteService(numOfOps int, clientOps []string) {
+// func (w *WorkerPool) useRemoteService(numOfOps int, clientOps []*client.OperationArguments) {
+func (w *WorkerPool) useRemoteService(numOfOps int, opName []string, opArgs1 []interface{}, opArgs2 []interface{}) {
 
 	clientOperations := make([]Operation, numOfOps)
 	for j := 0; j < numOfOps; j++ {
-		clientOperations[j] = Operation{clientOps[j], j}
+		clientOperations[j] = Operation{opName[j], j, opArgs1[j], opArgs2[j]}
 	}
 
 	operations := make(chan Operation, numOfOps)
@@ -64,12 +66,12 @@ func (w *WorkerPool) useRemoteService(numOfOps int, clientOps []string) {
 
 func (w *WorkerPool) UseRemoteService(operations <-chan Operation, responses chan<- Response) {
 
-	time.Sleep(time.Second * 2)
+	// time.Sleep(time.Second * 2)
 
 	for op := range operations {
 		// Calling a Remote Procedure
 		log.Printf("Operation %d: Calling Remote Procedure: '%s'", op.operationId, op.operationName)
 		// This Invoke can receive the operation to be executed and arguments needed
-		responses <- Response{(w.Invoke(op.operationName, "teste", op.operationId).Content[0]), op.operationId}
+		responses <- Response{(w.Invoke(op).Content[0]), op.operationId}
 	}
 }

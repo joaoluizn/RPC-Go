@@ -32,8 +32,9 @@ type Requestor struct {
 }
 
 // Invoke: Run desired method on remote server;
-func (r *Requestor) Invoke(serviceName string, methodName string, args []interface{}) network.Response {
+func (r *Requestor) Invoke(serviceName string, methodName string, arg1 interface{}, arg2 interface{}) network.Response {
 
+	args := make([]interface{}, 2)
 	serviceAddress := ""
 	if namingProxyIsOn {
 		serviceAddress = r.find(serviceName)
