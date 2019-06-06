@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/joaoluizn/RPC-go/layers/distribution/client"
+	"github.com/joaoluizn/RPC-Go/layers/distribution/client"
 )
 
 const (
@@ -70,17 +70,17 @@ func main() {
 	// clientOperations[9] = CreateObject
 
 	numOfOps := 10
-	clientOperations := make([]*client.OperationArguments, numOfOps)
-	clientOperations[0] = *client.NewOperation(CreateObject, "Banana", 2.50)
-	clientOperations[1] = *client.NewOperation(CreateObject, "PineApple", 4.0)
-	clientOperations[2] = *client.NewOperation(CreateObject, "Red Apple", 1.20)
-	clientOperations[3] = *client.NewOperation(CreateObject, "Green Apple", 1.40)
-	clientOperations[4] = *client.NewOperation(CreateObject, "Watermelon", 6.30)
-	clientOperations[5] = *client.NewOperation(CreateObject, "Detergent", 7.50)
-	clientOperations[6] = *client.NewOperation(CreateObject, "Soap", 1.30)
-	clientOperations[7] = *client.NewOperation(CreateObject, "Shampoo", 20.00)
-	clientOperations[8] = *client.NewOperation(CreateObject, "Ice Cream", 23.50)
-	clientOperations[9] = *client.NewOperation(CreateObject, "Pizza", 19.50)
+	clientOperations := make([]client.OperationArguments, numOfOps)
+	clientOperations[0] = client.NewOperation(CreateObject, "Banana", 2.50)
+	clientOperations[1] = client.NewOperation(CreateObject, "PineApple", 4.0)
+	clientOperations[2] = client.NewOperation(CreateObject, "Red Apple", 1.20)
+	clientOperations[3] = client.NewOperation(CreateObject, "Green Apple", 1.40)
+	clientOperations[4] = client.NewOperation(CreateObject, "Watermelon", 6.30)
+	clientOperations[5] = client.NewOperation(CreateObject, "Detergent", 7.50)
+	clientOperations[6] = client.NewOperation(CreateObject, "Soap", 1.30)
+	clientOperations[7] = client.NewOperation(CreateObject, "Shampoo", 20.00)
+	clientOperations[8] = client.NewOperation(CreateObject, "Ice Cream", 23.50)
+	clientOperations[9] = client.NewOperation(CreateObject, "Pizza", 19.50)
 
 	// for i := 0; i < numOfOps; i++ {
 	// 	clientOperations[i] = Operation{CreateObject, i}

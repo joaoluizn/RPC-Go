@@ -35,6 +35,8 @@ type Requestor struct {
 func (r *Requestor) Invoke(serviceName string, methodName string, arg1 interface{}, arg2 interface{}) network.Response {
 
 	args := make([]interface{}, 2)
+	args[0] = arg1
+	args[1] = arg2
 	serviceAddress := ""
 	if namingProxyIsOn {
 		serviceAddress = r.find(serviceName)

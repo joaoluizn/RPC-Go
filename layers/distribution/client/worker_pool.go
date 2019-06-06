@@ -21,9 +21,9 @@ type WorkerPool struct {
 
 type Operation struct {
 	operationName string
-	operationId   int
 	args1         interface{}
 	args2         interface{}
+	operationId   int
 }
 
 type Response struct {
@@ -41,7 +41,7 @@ func (w *WorkerPool) useRemoteService(numOfOps int, opName []string, opArgs1 []i
 
 	clientOperations := make([]Operation, numOfOps)
 	for j := 0; j < numOfOps; j++ {
-		clientOperations[j] = Operation{opName[j], j, opArgs1[j], opArgs2[j]}
+		clientOperations[j] = Operation{opName[j], opArgs1[j], opArgs2[j], j}
 	}
 
 	operations := make(chan Operation, numOfOps)
@@ -72,6 +72,8 @@ func (w *WorkerPool) UseRemoteService(operations <-chan Operation, responses cha
 		// Calling a Remote Procedure
 		log.Printf("Operation %d: Calling Remote Procedure: '%s'", op.operationId, op.operationName)
 		// This Invoke can receive the operation to be executed and arguments needed
+		// responses <- Response{(w.Invoke(op).Content[0]), op.operationId}
 		responses <- Response{(w.Invoke(op).Content[0]), op.operationId}
+
 	}
 }
