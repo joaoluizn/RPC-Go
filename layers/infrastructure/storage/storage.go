@@ -45,10 +45,10 @@ func (s *Storage) Create(name string, price float64) string {
 }
 
 func (s *Storage) ReadList(name string, price float64) string {
-	return s.PrintProductList() + "Read List Function Complete\n"
+	return s.PrintProductList() + "Read List Function Complete\n\n"
 }
 
-func (s *Storage) ReadItem(name string) string {
+func (s *Storage) ReadItem(name string, price float64) string {
 
 	response := ""
 	for _, p := range s.products {

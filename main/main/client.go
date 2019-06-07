@@ -20,55 +20,12 @@ const (
 	namingServerPort = "8923"
 )
 
-// type OperationArguments struct {
-// 	OperationName string
-// 	ProductName   string
-// 	ProductPrice  float32
-// }
-
-// func NewOperation(OperationName string) *OperationArguments{
-// 	return &OperationArguments{
-// 		OperationName : OperationName,
-// 	}
-// }
-
-// func NewOperation(OperationName string, ProductName string) *OperationArguments{
-// 	return &OperationArguments{
-// 		OperationName : OperationName,
-// 		ProductName : ProductName,
-// 	}
-// }
-
-// func NewOperation(OperationName string, ProductName string, ProductPrice float32) *OperationArguments {
-// 	return &OperationArguments{
-// 		OperationName: OperationName,
-// 		ProductName:   ProductName,
-// 		ProductPrice:  ProductPrice,
-// 	}
-// }
-
 func main() {
 
 	//Naming Server Address
 	namingServerAddr := fmt.Sprintf("%s:%s", namingServerHost, namingServerPort)
 	// Creating ClientProxy to call Remote Procedures
 	storageClient := client.NewClientProxy(namingServerAddr, StorageServiceName)
-
-	// namingProxyOn := true
-	// storageClient.setNamingProxy(namingproxyIsOn)
-
-	// numOfOps := 10
-	// clientOperations := make([]string, numOfOps)
-	// clientOperations[0] = CreateObject
-	// clientOperations[1] = CreateObject
-	// clientOperations[2] = CreateObject
-	// clientOperations[3] = CreateObject
-	// clientOperations[4] = CreateObject
-	// clientOperations[5] = CreateObject
-	// clientOperations[6] = CreateObject
-	// clientOperations[7] = CreateObject
-	// clientOperations[8] = CreateObject
-	// clientOperations[9] = CreateObject
 
 	numOfOps := 10
 	clientOperations := make([]client.OperationArguments, numOfOps)
@@ -83,10 +40,6 @@ func main() {
 	clientOperations[8] = client.NewOperation(CreateObject, "Ice Cream", 23.95)
 	clientOperations[9] = client.NewOperation(CreateObject, "Pizza", 19.95)
 
-	// for i := 0; i < numOfOps; i++ {
-	// 	clientOperations[i] = Operation{CreateObject, i}
-	// }
-
 	storageClient.UseRemoteService(numOfOps, clientOperations)
 
 	time.Sleep(time.Second * 1)
@@ -96,6 +49,18 @@ func main() {
 
 	storageClient.UseRemoteService(1, readOperation)
 
-	time.Sleep(time.Second * 1000)
+	time.Sleep(time.Second * 1)
 
+	updateOperation := make([]client.OperationArguments, 1)
+	updateOperation[0] = client.NewOperation(UpdateObject, "PineApple", 5000.95)
+
+	time.Sleep(time.Second * 1)
+
+	storageClient.UseRemoteService(1, updateOperation)
+
+	time.Sleep(time.Second * 1)
+
+	storageClient.UseRemoteService(1, readOperation)
+
+	time.Sleep(time.Second * 1000)
 }
