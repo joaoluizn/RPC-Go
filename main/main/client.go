@@ -13,6 +13,7 @@ const (
 	CreateObject       = "Create"
 	RemoveObject       = "Remove"
 	UpdateObject       = "Update"
+	ReadObjectList     = "ReadList"
 	DeleteObject       = "Delete"
 
 	namingServerHost = "0.0.0.0"
@@ -71,22 +72,29 @@ func main() {
 
 	numOfOps := 10
 	clientOperations := make([]client.OperationArguments, numOfOps)
-	clientOperations[0] = client.NewOperation(CreateObject, "Banana", 2.50)
-	clientOperations[1] = client.NewOperation(CreateObject, "PineApple", 4.0)
-	clientOperations[2] = client.NewOperation(CreateObject, "Red Apple", 1.20)
-	clientOperations[3] = client.NewOperation(CreateObject, "Green Apple", 1.40)
-	clientOperations[4] = client.NewOperation(CreateObject, "Watermelon", 6.30)
-	clientOperations[5] = client.NewOperation(CreateObject, "Detergent", 7.50)
-	clientOperations[6] = client.NewOperation(CreateObject, "Soap", 1.30)
-	clientOperations[7] = client.NewOperation(CreateObject, "Shampoo", 20.00)
-	clientOperations[8] = client.NewOperation(CreateObject, "Ice Cream", 23.50)
-	clientOperations[9] = client.NewOperation(CreateObject, "Pizza", 19.50)
+	clientOperations[0] = client.NewOperation(CreateObject, "Banana", 2.95)
+	clientOperations[1] = client.NewOperation(CreateObject, "PineApple", 4.95)
+	clientOperations[2] = client.NewOperation(CreateObject, "Red Apple", 1.25)
+	clientOperations[3] = client.NewOperation(CreateObject, "Green Apple", 1.75)
+	clientOperations[4] = client.NewOperation(CreateObject, "Watermelon", 6.25)
+	clientOperations[5] = client.NewOperation(CreateObject, "Detergent", 7.25)
+	clientOperations[6] = client.NewOperation(CreateObject, "Soap", 1.95)
+	clientOperations[7] = client.NewOperation(CreateObject, "Shampoo", 20.25)
+	clientOperations[8] = client.NewOperation(CreateObject, "Ice Cream", 23.95)
+	clientOperations[9] = client.NewOperation(CreateObject, "Pizza", 19.95)
 
 	// for i := 0; i < numOfOps; i++ {
 	// 	clientOperations[i] = Operation{CreateObject, i}
 	// }
 
 	storageClient.UseRemoteService(numOfOps, clientOperations)
+
+	time.Sleep(time.Second * 1)
+
+	readOperation := make([]client.OperationArguments, 1)
+	readOperation[0] = client.NewOperation(ReadObjectList, "", 0)
+
+	storageClient.UseRemoteService(1, readOperation)
 
 	time.Sleep(time.Second * 1000)
 

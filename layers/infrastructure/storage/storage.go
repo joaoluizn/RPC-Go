@@ -27,35 +27,25 @@ const (
 
 func (s *Storage) PrintProductList() string {
 
-	response := "\n"
-	for i := 0; i <= s.productsIndex; i++ {
-		response += "Product: " + s.products[i].Name + "Price: " + fmt.Sprint("%f", s.products[i].Price) + "\n"
+	response := "\n\nProduct List: \n"
+	for i := 0; i <= s.productsIndex-1; i++ {
+		response += "Product " + fmt.Sprintf("%d", s.products[i].Id) + ": " + s.products[i].Name + " R$" + fmt.Sprintf("%.2f", s.products[i].Price) + "\n"
 	}
 	return response
 }
-
-// func (s *Storage) PrintCurrentItem() {
-// 	//products[productsIndex] = Product{Id: productsIndex, Name: name, Price: price}
-// 	//fmt.Printf("%d %s %d\n", products[i].Id, products[i].Name, products[i].Price)
-// }
-
-// func (s *Storage) HelloStorage(args string, args2 string) string {
-// 	log.Println(args, args2)
-// 	return "A Hello message from Storage!\n"
-// }
 
 func (s *Storage) Create(name string, price float64) string {
 
 	s.products[s.productsIndex] = Product{Id: s.productsIndex, Name: name, Price: price}
 	s.productsIndex++
 
-	s.PrintProductList()
+	// return s.PrintProductList() + "Create Function Complete\n\n"
 	return "Create Function Complete\n"
+
 }
 
-func (s *Storage) ReadList() string {
-	s.PrintProductList()
-	return "Read List Function Complete\n"
+func (s *Storage) ReadList(name string, price float64) string {
+	return s.PrintProductList() + "Read List Function Complete\n"
 }
 
 func (s *Storage) ReadItem(name string) string {
@@ -63,7 +53,7 @@ func (s *Storage) ReadItem(name string) string {
 	response := ""
 	for _, p := range s.products {
 		if p.Name == name {
-			response += "Product: " + p.Name + "Price: " + fmt.Sprintf("f%", p.Price) + "\n"
+			response += "Product " + fmt.Sprintf("%d", p.Id) + ": " + p.Name + "Price: " + fmt.Sprintf("%.2f", p.Price) + "\n"
 		}
 	}
 	if response == "" {
@@ -90,11 +80,3 @@ func (s *Storage) Delete() string {
 	s.productsIndex--
 	return "Delete Function Complete\n"
 }
-
-//func (s Storage) AddSlice( []Product) string {
-//	products[productsIndex] = Product{Id: productsIndex, Product: product}
-//	productsIndex++
-//
-//	PrintProductList()
-//	return "Create Function\n"
-//}
