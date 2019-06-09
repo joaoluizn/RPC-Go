@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/joaoluizn/RPC-Go/RPC-Go-simple/layers/distribution/client"
 )
@@ -40,7 +41,11 @@ func main() {
 	clientOperations[9] = client.NewOperation(CreateObject, "Pizza", 19.95)
 
 	for i := 0; i < numOfOps; i++ {
+		start := time.Now()
 		storageClient.UseRemoteService(clientOperations[i])
+		t := time.Now()
+		elapsed := t.Sub(start)
+		fmt.printf(elapsed)
 	}
 
 }
