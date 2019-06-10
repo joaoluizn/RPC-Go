@@ -63,10 +63,14 @@ func (w *WorkerPool) useRemoteService(numOfOps int, opName []string, opArgs1 []i
 		log.Printf("Response of Operation %d: %s", response.operationId, response.operationResponse)
 	}
 	counter += numOfOps
+	for workCounter < numOfOps {
+
+	}
 }
 
 var (
-	counter = 0
+	counter     = 0
+	workCounter = 0
 )
 
 func (w *WorkerPool) UseRemoteService(operations <-chan Operation, responses chan<- Response) {
@@ -77,5 +81,6 @@ func (w *WorkerPool) UseRemoteService(operations <-chan Operation, responses cha
 		// This Invoke can receive the operation to be executed and arguments needed
 		// responses <- Response{(w.Invoke(op).Content[0]), op.operationId}
 		responses <- Response{(w.Invoke(op).Content[0]), op.operationId + counter}
+		workCounter++
 	}
 }
