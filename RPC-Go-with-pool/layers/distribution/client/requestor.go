@@ -13,7 +13,7 @@ var (
 	namingProxyIsOn = true
 )
 
-// NewRequestor: Create a Requestor instance;
+// NewRequestor Create a Requestor instance;
 func NewRequestor(namingServerAddress string) *Requestor {
 	return &Requestor{
 		namingServerAddress: namingServerAddress,
@@ -23,7 +23,7 @@ func NewRequestor(namingServerAddress string) *Requestor {
 	}
 }
 
-// Requestor: Object reponsible for remote service access;
+// Requestor Object reponsible for remote service access;
 type Requestor struct {
 	namingServerAddress string
 	requestHandler      *client.ClientRequestHandler
@@ -31,7 +31,7 @@ type Requestor struct {
 	namingProxy         *infrastructure.NamingProxy
 }
 
-// Invoke: Run desired method on remote server;
+// Invoke Run desired method on remote server;
 func (r *Requestor) Invoke(serviceName string, methodName string, arg1 interface{}, arg2 interface{}) network.Response {
 
 	args := make([]interface{}, 2)
@@ -50,37 +50,37 @@ func (r *Requestor) Invoke(serviceName string, methodName string, arg1 interface
 	return r.unmarshall(serverResponse)
 }
 
-// lookup: Looks for specific remote server address from a service name;
+// lookup Looks for specific remote server address from a service name;
 func (r *Requestor) lookup(serviceName string) string {
 	lookupResponse := r.requestHandler.Lookup(r.namingServerAddress, serviceName)
 	return r.marshaller.UnmarshallLookupResponse(lookupResponse)
 }
 
-// send: Send invocation request to Client Request Handler;
+// send Send invocation request to Client Request Handler;
 func (r *Requestor) send(remoteServiceAddress string, requestData *bytes.Buffer) *http.Response {
 	serverResponse := r.requestHandler.Send(remoteServiceAddress, requestData)
 	return serverResponse
 }
 
-// marshall: Serializes an invoke request into a bytes buffer;
+// marshall Serializes an invoke request into a bytes buffer;
 func (r *Requestor) marshall(serviceName string, methodName string, args []interface{}) *bytes.Buffer {
 	clientRequest := network.NewClientRequest(serviceName, methodName, args)
 	return r.marshaller.MarshallClientRequest(clientRequest)
 }
 
-// unmarshall: Deserializes an HTTP response;
+// unmarshall Deserializes an HTTP response;
 func (r *Requestor) unmarshall(serverResponse *http.Response) network.Response {
 	clientResponse := r.marshaller.UnmarshallClientResponse(serverResponse)
 	return clientResponse
 }
 
-// find : Looks for service address naming proxy
+// find Looks for service address naming proxy;
 func (r *Requestor) find(serviceName string) string {
 	response := r.namingProxy.Find(serviceName)
 	return response
 }
 
-// putServiceInNamingProxy: Registers a service in naming proxy
+// putServiceInNamingProxy Registers a service in naming proxy;
 func (r *Requestor) putServiceInNamingProxy(serviceName string, serviceAddress string) {
 	r.namingProxy.PutServiceInNamingProxy(serviceName, serviceAddress)
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/joaoluizn/RPC-Go/RPC-Go-with-pool/network"
 )
 
+// NewWorkerPool create a new worker pool to handle services requests
 func NewWorkerPool(namingServerAddress string, serviceName string) *WorkerPool {
 	return &WorkerPool{
 		requestor:   NewRequestor(namingServerAddress),
@@ -13,12 +14,13 @@ func NewWorkerPool(namingServerAddress string, serviceName string) *WorkerPool {
 	}
 }
 
-// ClientProxy: Object reponsible for remote communication
+// WorkerPool Object reponsible for handling workers;
 type WorkerPool struct {
 	requestor   *Requestor
 	serviceName string
 }
 
+// Operation Object responsible to wrap service call data
 type Operation struct {
 	operationName string
 	args1         interface{}
@@ -26,17 +28,18 @@ type Operation struct {
 	operationId   int
 }
 
+// Response Object responsible to unwrap response for data compliance puposes
 type Response struct {
 	operationResponse interface{}
 	operationId       int
 }
 
-// Invoke: Run desired method on remote server;
+// Invoke Run desired method on remote server;
 func (w *WorkerPool) Invoke(operation Operation) network.Response {
 	return w.requestor.Invoke(w.serviceName, operation.operationName, operation.args1, operation.args2)
 }
 
-// func (w *WorkerPool) useRemoteService(numOfOps int, clientOps []*client.OperationArguments) {
+// useRemoteService Responsible for remote service calling by worker pool;
 func (w *WorkerPool) useRemoteService(numOfOps int, opName []string, opArgs1 []interface{}, opArgs2 []interface{}) {
 
 	clientOperations := make([]Operation, numOfOps)
@@ -73,13 +76,11 @@ var (
 	workCounter = 0
 )
 
+// UseRemoteService Call a Remote Procedure
 func (w *WorkerPool) UseRemoteService(operations <-chan Operation, responses chan<- Response) {
-
 	for op := range operations {
-		// Calling a Remote Procedure
 		log.Printf("Operation %d: Calling Remote Procedure: '%s'", op.operationId+counter, op.operationName)
 		// This Invoke can receive the operation to be executed and arguments needed
-		// responses <- Response{(w.Invoke(op).Content[0]), op.operationId}
 		responses <- Response{(w.Invoke(op).Content[0]), op.operationId + counter}
 		workCounter++
 	}

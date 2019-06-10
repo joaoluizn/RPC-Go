@@ -1,12 +1,13 @@
 package client
 
-// NewClientProxy: Create ClientProxy instance;
+// NewClientProxy Create ClientProxy instance;
 func NewClientProxy(namingServerAddress string, serviceName string) *ClientProxy {
 	return &ClientProxy{
 		workerPool: NewWorkerPool(namingServerAddress, serviceName),
 	}
 }
 
+// UseRemoteService Responsible for remote service calling by worker pool;
 func (p *ClientProxy) UseRemoteService(numOfOps int, clientOperations []OperationArguments) {
 	operationNames := make([]string, numOfOps)
 	operationArgs1 := make([]interface{}, numOfOps)
@@ -19,17 +20,19 @@ func (p *ClientProxy) UseRemoteService(numOfOps int, clientOperations []Operatio
 	p.workerPool.useRemoteService(numOfOps, operationNames, operationArgs1, operationArgs2)
 }
 
-// ClientProxy: Object reponsible for remote communication
+// ClientProxy Object reponsible for remote communication;
 type ClientProxy struct {
 	workerPool *WorkerPool
 }
 
+// OperationArguments Object reponsible for wrap operations;
 type OperationArguments struct {
 	OperationName string
 	arg1          interface{}
 	arg2          interface{}
 }
 
+// NewOperation Create new OperationArguments instance;
 func NewOperation(OperationName string, arg1 interface{}, arg2 interface{}) OperationArguments {
 	return OperationArguments{
 		OperationName: OperationName,
