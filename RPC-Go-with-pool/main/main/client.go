@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"time"
+	"strconv"
 
 	"github.com/joaoluizn/RPC-Go/RPC-Go-with-pool/layers/distribution/client"
 )
@@ -40,27 +41,11 @@ func main() {
 	clientOperations[8] = client.NewOperation(CreateObject, "Ice Cream", 23.95)
 	clientOperations[9] = client.NewOperation(CreateObject, "Pizza", 19.95)
 
-	storageClient.UseRemoteService(numOfOps, clientOperations)
+	for i := 0; i < 1000; i++ {
+		start := time.Now()
+		storageClient.UseRemoteService(numOfOps, clientOperations)
+		elapsed := time.Since(start)
+		fmt.Printf(strconv.FormatInt(elapsed.Nanoseconds(),10)+"\n")
+	}
 
-	time.Sleep(time.Second * 1)
-
-	readOperation := make([]client.OperationArguments, 1)
-	readOperation[0] = client.NewOperation(ReadObjectList, "", 0)
-
-	storageClient.UseRemoteService(1, readOperation)
-
-	time.Sleep(time.Second * 1)
-
-	updateOperation := make([]client.OperationArguments, 1)
-	updateOperation[0] = client.NewOperation(UpdateObject, "PineApple", 5000.95)
-
-	time.Sleep(time.Second * 1)
-
-	storageClient.UseRemoteService(1, updateOperation)
-
-	time.Sleep(time.Second * 1)
-
-	storageClient.UseRemoteService(1, readOperation)
-
-	time.Sleep(time.Second * 1000)
 }

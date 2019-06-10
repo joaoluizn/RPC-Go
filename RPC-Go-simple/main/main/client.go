@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"time"
+	"strconv"
 
 	"github.com/joaoluizn/RPC-Go/RPC-Go-simple/layers/distribution/client"
 )
@@ -27,7 +28,7 @@ func main() {
 	// Creating ClientProxy to call Remote Procedures
 	storageClient := client.NewClientProxy(namingServerAddr, StorageServiceName)
 
-	numOfOps := 10
+	numOfOps := 10000
 	clientOperations := make([]client.OperationArguments, 10)
 	clientOperations[0] = client.NewOperation(CreateObject, "Banana", 2.95)
 	clientOperations[1] = client.NewOperation(CreateObject, "PineApple", 4.95)
@@ -42,10 +43,9 @@ func main() {
 
 	for i := 0; i < numOfOps; i++ {
 		start := time.Now()
-		storageClient.UseRemoteService(clientOperations[i])
-		t := time.Now()
-		elapsed := t.Sub(start)
-		fmt.printf(elapsed)
+		storageClient.UseRemoteService(clientOperations[i%10])
+		elapsed := time.Since(start)
+		fmt.Printf(strconv.FormatInt(elapsed.Nanoseconds(),10)+"\n")
 	}
 
 }
