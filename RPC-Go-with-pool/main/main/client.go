@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"time"
 	"strconv"
+	"time"
 
 	"github.com/joaoluizn/RPC-Go/RPC-Go-with-pool/layers/distribution/client"
 )
@@ -28,24 +28,15 @@ func main() {
 	// Creating ClientProxy to call Remote Procedures
 	storageClient := client.NewClientProxy(namingServerAddr, StorageServiceName)
 
-	numOfOps := 10
+	numOfOps := 100
 	clientOperations := make([]client.OperationArguments, numOfOps)
-	clientOperations[0] = client.NewOperation(CreateObject, "Banana", 2.95)
-	clientOperations[1] = client.NewOperation(CreateObject, "PineApple", 4.95)
-	clientOperations[2] = client.NewOperation(CreateObject, "Red Apple", 1.25)
-	clientOperations[3] = client.NewOperation(CreateObject, "Green Apple", 1.75)
-	clientOperations[4] = client.NewOperation(CreateObject, "Watermelon", 6.25)
-	clientOperations[5] = client.NewOperation(CreateObject, "Detergent", 7.25)
-	clientOperations[6] = client.NewOperation(CreateObject, "Soap", 1.95)
-	clientOperations[7] = client.NewOperation(CreateObject, "Shampoo", 20.25)
-	clientOperations[8] = client.NewOperation(CreateObject, "Ice Cream", 23.95)
-	clientOperations[9] = client.NewOperation(CreateObject, "Pizza", 19.95)
 
-	for i := 0; i < 1000; i++ {
-		start := time.Now()
-		storageClient.UseRemoteService(numOfOps, clientOperations)
-		elapsed := time.Since(start)
-		fmt.Printf(strconv.FormatInt(elapsed.Nanoseconds(),10)+"\n")
+	for i := 0; i < numOfOps; i++ {
+		clientOperations[i] = client.NewOperation(CreateObject, "Banana#"+strconv.Itoa(i), 2.95)
 	}
 
+	start := time.Now()
+	storageClient.UseRemoteService(numOfOps, clientOperations)
+	elapsed := time.Since(start)
+	fmt.Printf(strconv.FormatInt(elapsed.Nanoseconds(), 10) + "\n")
 }
