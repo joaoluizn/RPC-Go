@@ -1,6 +1,6 @@
 package infrastructure
 
-import "log"
+// import "log"
 
 // NewConnectionPool:  Create ConnectionPool instance;
 func NewNamingProxy(size int) *NamingProxy {
@@ -23,11 +23,11 @@ func (p *NamingProxy) Find(serviceName string) string {
 	_, nameInNamingProxy := p.ServiceBuffer[serviceName]
 
 	if nameInNamingProxy {
-		log.Printf("Service Found in Naming Proxy ")
+		// log.Printf("Service Found in Naming Proxy ")
 		return p.ServiceBuffer[serviceName]
 	}
 
-	log.Print("Service Not Found in Naming Proxy.")
+	// log.Print("Service Not Found in Naming Proxy.")
 	// log.Printf("Naming Server Address: ")
 	return ""
 

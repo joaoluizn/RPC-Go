@@ -101,7 +101,7 @@ func (m *Marshaller) MarshalNamingServiceRegistration(namingServiceRegistration 
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	log.Printf("MarshalNamingServiceRegistration: Marshall complete: Service Registration data ready to be sent")
+	// log.Printf("MarshalNamingServiceRegistration: Marshall complete: Service Registration data ready to be sent")
 	return bytes.NewBuffer(objectBytes)
 }
 

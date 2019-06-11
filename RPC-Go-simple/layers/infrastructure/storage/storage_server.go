@@ -37,7 +37,7 @@ func (r *StorageServiceServer) RegisterServiceInLocalStorage(name string, instan
 
 // runHTTPServerForServicesInvocation brings up the http server that handles services invoke requests
 func (r *StorageServiceServer) runHTTPServerForServicesInvocation(listener net.Listener, storageServerAddr string) {
-	log.Printf("Running Storage Remote Server on: %s\n\n", storageServerAddr)
+	// log.Printf("Running Storage Remote Server on: %s\n\n", storageServerAddr)
 
 	http.HandleFunc("/invoke/", r.requestHandler.HandleInvokeRequest)
 
@@ -49,6 +49,6 @@ func (r *StorageServiceServer) runHTTPServerForServicesInvocation(listener net.L
 
 // bindServicesInNamingService binds services on naming service server
 func (r *StorageServiceServer) bindServicesToNamingService(serviceAddr string) {
-	log.Printf("Binding Services from: %s to Naming Service.\n", serviceAddr)
+	// log.Printf("Binding Services from: %s to Naming Service.\n", serviceAddr)
 	r.requestHandler.Invoker.RemoteService.SaveServicesToNamingService(serviceAddr, r.namingServerAddr)
 }

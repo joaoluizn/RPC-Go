@@ -2,11 +2,10 @@ package client
 
 import (
 	"bytes"
-	"log"
 	"net/http"
 
-	"github.com/joaoluizn/RPC-Go/RPC-Go-simple/layers/infrastructure/client"
 	"github.com/joaoluizn/RPC-Go/RPC-Go-simple/layers/infrastructure"
+	"github.com/joaoluizn/RPC-Go/RPC-Go-simple/layers/infrastructure/client"
 	"github.com/joaoluizn/RPC-Go/RPC-Go-simple/network"
 )
 
@@ -99,9 +98,6 @@ func (r *Requestor) putServiceInNamingProxy(serviceName string, serviceAddress s
 
 func (r *Requestor) useRemoteService(opName string, opArgs1 interface{}, opArgs2 interface{}) {
 
-	log.Printf("Calling Remote Procedure: '%s'", opName)
-	// responses <- Response{(w.Invoke(op).Content[0]), op.operationId + counter}
-	response := r.Invoke(r.serviceName, opName, opArgs1, opArgs2).Content[0]
-	log.Printf("Response: %s", response)
+	r.Invoke(r.serviceName, opName, opArgs1, opArgs2)
 
 }
