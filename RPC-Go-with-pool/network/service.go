@@ -1,5 +1,6 @@
 package network
 
+// NewService Create Service Entity
 func NewService(serviceName string, serviceAddr string) *Service {
 	return &Service{
 		Name:    serviceName,
@@ -7,11 +8,13 @@ func NewService(serviceName string, serviceAddr string) *Service {
 	}
 }
 
+// Service Entity that wraps service information
 type Service struct {
 	Name    string
 	Address string
 }
 
+// MakeServiceList Compose a service list
 func MakeServiceList(servicesNames []string, serverAddr string) []*Service {
 	serviceSlice := make([]*Service, 0)
 

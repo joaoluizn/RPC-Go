@@ -5,7 +5,7 @@ import (
 	"net"
 )
 
-// GetTCPListener gets a TCP listener choosing the first available port
+// GetTCPListener Get a TCP listener to listen on a specific port
 func GetTCPListener(serviceAddr string) *net.TCPListener {
 	address, _ := net.ResolveTCPAddr("tcp", serviceAddr)
 	listener, err := net.ListenTCP("tcp", address)
@@ -15,7 +15,7 @@ func GetTCPListener(serviceAddr string) *net.TCPListener {
 	return listener
 }
 
-// GetTCPDialer gets a TCP dialer to communicate with a TCP socket
+// GetTCPDialer Get a TCP dialer to communication purposes with a specific address
 func GetTCPDialer(address string) *net.TCPConn {
 	tcpAddress, _ := net.ResolveTCPAddr("tcp", address)
 	dialer, _ := net.DialTCP("tcp", nil, tcpAddress)

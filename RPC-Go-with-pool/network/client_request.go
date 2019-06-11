@@ -1,11 +1,11 @@
 package network
 
-// NewClientRequest: Create ClientRequest instance;
+// NewClientRequest Create ClientRequest Entity;
 func NewClientRequest(serviceName string, methodName string, args []interface{}) *ClientRequest {
 	return &ClientRequest{ServiceName: serviceName, MethodName: methodName, Arguments: args}
 }
 
-// ClientRequest: Object that stores client request to execute a remote method;
+// ClientRequest Entity responsible to wrap method information from client Requests;
 type ClientRequest struct {
 	ServiceName string
 	MethodName  string
