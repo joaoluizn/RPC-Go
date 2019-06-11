@@ -2,7 +2,7 @@ package infrastructure
 
 import "log"
 
-// NewConnectionPool:  Create ConnectionPool instance;
+// NewNamingProxy Create ConnectionPool instance;
 func NewNamingProxy(size int) *NamingProxy {
 	return &NamingProxy{
 		ServiceBuffer: make(map[string]string, size),
@@ -11,15 +11,15 @@ func NewNamingProxy(size int) *NamingProxy {
 	}
 }
 
-// Naming:
+// NamingProxy Object to stora previously used proxy for otimization puposes
 type NamingProxy struct {
 	ServiceBuffer map[string]string
 	PoolSize      int
 	On            bool
 }
 
+// Find search a service in the Naming Proxy
 func (p *NamingProxy) Find(serviceName string) string {
-
 	_, nameInNamingProxy := p.ServiceBuffer[serviceName]
 
 	if nameInNamingProxy {
@@ -28,11 +28,11 @@ func (p *NamingProxy) Find(serviceName string) string {
 	}
 
 	log.Print("Service Not Found in Naming Proxy.")
-	// log.Printf("Naming Server Address: ")
 	return ""
 
 }
 
+// PutServiceInNamingProxy Save a service in the naming Proxy
 func (p *NamingProxy) PutServiceInNamingProxy(serviceName string, serviceAddress string) {
 	p.ServiceBuffer[serviceName] = serviceAddress
 }

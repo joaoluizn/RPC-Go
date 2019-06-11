@@ -11,7 +11,7 @@ import (
 	"github.com/joaoluizn/RPC-Go/RPC-Go-with-pool/services/storage"
 )
 
-// NewInvoker builds a new instance of Invoker
+// NewInvoker creates Invoker Entity;
 func NewInvoker() *Invoker {
 	return &Invoker{
 		RemoteService: storage.NewRemoteService(),
@@ -19,20 +19,20 @@ func NewInvoker() *Invoker {
 	}
 }
 
-// Invoker responsible for run method request by client
+// Invoker Entity responsible for run requested methods;
 type Invoker struct {
 	RemoteService *storage.RemoteService
 	marshaller    *network.Marshaller
 }
 
-// Invoke runs method requested
+// Invoke Invoke a requested method;
 func (i *Invoker) Invoke(request *http.Request) []byte {
 	clientInvoke := i.marshaller.UnmarshalClientInvokeRequest(request)
 	output := i.invoke(clientInvoke)
 	return i.marshaller.MarshalClientResponse(output)
 }
 
-//invoke runs method requested
+//invoke Invoke a requested method;
 func (i *Invoker) invoke(clientInvoke *structs.ClientInvoke) interface{} {
 	log.Printf("Invoking: %s.%s(%s: R$%s)",
 		clientInvoke.ServiceName, clientInvoke.MethodName, clientInvoke.Arguments[0], fmt.Sprintf("%.2f", clientInvoke.Arguments[1]),
@@ -44,7 +44,7 @@ func (i *Invoker) invoke(clientInvoke *structs.ClientInvoke) interface{} {
 	return i.getMethodReturn(outputs)
 }
 
-// getService gets the service requested from service name
+// getService Get service from invocation request;
 func (i *Invoker) getService(serviceName string) reflect.Value {
 	serviceValue := reflect.ValueOf(i.RemoteService.GetService(serviceName))
 	if !serviceValue.IsValid() {
@@ -54,7 +54,7 @@ func (i *Invoker) getService(serviceName string) reflect.Value {
 	return serviceValue
 }
 
-// getMethod gets the method requested
+// getMethod Get method from invocation request;
 func (i *Invoker) getMethod(service reflect.Value, methodName string) reflect.Value {
 	methodReflectionValue := service.MethodByName(methodName)
 
@@ -65,7 +65,7 @@ func (i *Invoker) getMethod(service reflect.Value, methodName string) reflect.Va
 	return methodReflectionValue
 }
 
-// getArguments converts the arguments to their correct types for the method given
+// getArguments Get Arguments from invocation request
 func (i *Invoker) getArguments(method reflect.Value, args []interface{}) []reflect.Value {
 	argsValue := make([]reflect.Value, len(args))
 
@@ -75,7 +75,6 @@ func (i *Invoker) getArguments(method reflect.Value, args []interface{}) []refle
 
 		switch method.Type().In(index).Kind() {
 		case reflect.Int:
-			// Any numeric type from request is automatically converted to float64
 			newArg = int(arg.(float64))
 		case reflect.Float64:
 			newArg = arg.(float64)
@@ -91,10 +90,9 @@ func (i *Invoker) getArguments(method reflect.Value, args []interface{}) []refle
 	return argsValue
 }
 
-// getMethodReturn converts the methods returns to their correct types
+// getMethodReturn Get method return from invocation calls
 func (i *Invoker) getMethodReturn(outputs []reflect.Value) interface{} {
 	outputsInterface := make([]interface{}, len(outputs))
-
 	for index := range outputsInterface {
 		outputsInterface[index] = outputs[index].Interface()
 	}

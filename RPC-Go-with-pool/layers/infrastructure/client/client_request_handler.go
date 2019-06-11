@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-// NewClientRequestHandler:  Create ClientRequestHandler instance;
+// NewClientRequestHandler  Create ClientRequestHandler instance;
 func NewClientRequestHandler() *ClientRequestHandler {
 	return &ClientRequestHandler{
 		Client: &http.Client{
@@ -16,12 +16,12 @@ func NewClientRequestHandler() *ClientRequestHandler {
 	}
 }
 
-// ClientRequestHandler: Object used to send requests to a remote service;
+// ClientRequestHandler Object used to send requests to a remote service;
 type ClientRequestHandler struct {
 	*http.Client
 }
 
-// Lookup looks for a remote service address for the naming service given
+// Lookup Ask the serviceName for an service Address by specific name
 func (r *ClientRequestHandler) Lookup(namingServerAddr string, serviceName string) *http.Response {
 	log.Printf("Looking Up in Naming Server at Address: %s", namingServerAddr)
 	response, err := r.Get(
@@ -35,7 +35,7 @@ func (r *ClientRequestHandler) Lookup(namingServerAddr string, serviceName strin
 	return response
 }
 
-// Send sends a invoke request to remote service
+// Send sends an invocation request to the remote server
 func (r *ClientRequestHandler) Send(remoteServiceAddr string, request *bytes.Buffer) *http.Response {
 	response, err := r.Post(
 		// URL

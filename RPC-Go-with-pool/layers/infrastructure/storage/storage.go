@@ -2,17 +2,20 @@ package storage
 
 import "fmt"
 
+// Product Object to wrap product information
 type Product struct {
 	Id    int
 	Name  string
 	Price float64
 }
 
+// Storage Object to store products
 type Storage struct {
 	products      []Product
 	productsIndex int
 }
 
+// NewStorage Create Storage Entity
 func NewStorage() *Storage {
 	return &Storage{
 		products:      make([]Product, 10000),
@@ -25,6 +28,7 @@ const (
 	StorageServiceName = "Storage"
 )
 
+// PrintProductList Print a list of products stored
 func (s *Storage) PrintProductList() string {
 
 	response := "\n\nProduct List: \n"
@@ -34,6 +38,7 @@ func (s *Storage) PrintProductList() string {
 	return response
 }
 
+// Create Create a new product and store it to Storage
 func (s *Storage) Create(name string, price float64) string {
 
 	s.products[s.productsIndex] = Product{Id: s.productsIndex, Name: name, Price: price}
@@ -44,10 +49,12 @@ func (s *Storage) Create(name string, price float64) string {
 
 }
 
+// ReadList Print a list of products stored
 func (s *Storage) ReadList(name string, price float64) string {
 	return s.PrintProductList() + "Read List Function Complete\n\n"
 }
 
+// ReadItem Print a specific item from Storage
 func (s *Storage) ReadItem(name string, price float64) string {
 
 	response := ""
@@ -64,6 +71,7 @@ func (s *Storage) ReadItem(name string, price float64) string {
 	}
 }
 
+// Update Update a specific item from Storage
 func (s *Storage) Update(name string, price float64) string {
 
 	for i, p := range s.products {
@@ -74,8 +82,8 @@ func (s *Storage) Update(name string, price float64) string {
 	return "Update Function Complete\n"
 }
 
+// Delete Last added item on Storage
 func (s *Storage) Delete() string {
-
 	s.products[s.productsIndex] = Product{0, "", 0}
 	s.productsIndex--
 	return "Delete Function Complete\n"

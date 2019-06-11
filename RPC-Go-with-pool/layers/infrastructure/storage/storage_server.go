@@ -8,6 +8,7 @@ import (
 	"github.com/joaoluizn/RPC-Go/RPC-Go-with-pool/network"
 )
 
+// NewStorageServiceServer create StorageServiceServer Entity
 func NewStorageServiceServer(storageServerAddr string, namingServerAddr string) *StorageServiceServer {
 	return &StorageServiceServer{
 		namingServerAddr:  namingServerAddr,
@@ -16,26 +17,26 @@ func NewStorageServiceServer(storageServerAddr string, namingServerAddr string) 
 	}
 }
 
-// RemoteServiceServer holds services that can be invoke for clients
+// StorageServiceServer Entity Responsible to save services that can be invoked from clients;
 type StorageServiceServer struct {
 	namingServerAddr  string
 	storageServerAddr string
 	requestHandler    *StorageServiceRequestHandler
 }
 
-// Run runs the remote service
+// RunRemoteServer core function to run the Remote Server;
 func (r *StorageServiceServer) RunRemoteServer() {
 	listener := network.GetTCPListener(r.storageServerAddr)
 	r.bindServicesToNamingService(r.storageServerAddr)
 	r.runHTTPServerForServicesInvocation(listener, r.storageServerAddr)
 }
 
-// RegisterServiceInNamingService adds a new service that will be available for clients
+// RegisterServiceInLocalStorage adds a new service that will be available for clients;
 func (r *StorageServiceServer) RegisterServiceInLocalStorage(name string, instance interface{}) {
 	r.requestHandler.Invoker.RemoteService.RegisterService(name, instance)
 }
 
-// runHTTPServerForServicesInvocation brings up the http server that handles services invoke requests
+// runHTTPServerForServicesInvocation Run a http server for the /invoke endpoint
 func (r *StorageServiceServer) runHTTPServerForServicesInvocation(listener net.Listener, storageServerAddr string) {
 	log.Printf("Running Storage Remote Server on: %s\n\n", storageServerAddr)
 
@@ -47,7 +48,7 @@ func (r *StorageServiceServer) runHTTPServerForServicesInvocation(listener net.L
 	}
 }
 
-// bindServicesInNamingService binds services on naming service server
+// bindServicesInNamingService binds new services to Naming Service
 func (r *StorageServiceServer) bindServicesToNamingService(serviceAddr string) {
 	log.Printf("Binding Services from: %s to Naming Service.\n", serviceAddr)
 	r.requestHandler.Invoker.RemoteService.SaveServicesToNamingService(serviceAddr, r.namingServerAddr)

@@ -8,7 +8,7 @@ import (
 	"github.com/joaoluizn/RPC-Go/RPC-Go-with-pool/network"
 )
 
-// NewNamingServiceServer builds a new instance of NamingServiceServer
+// NewNamingServiceServer create a new instance of NamingServiceServer
 func NewNamingServiceServer(namingServerAddr string) *NamingServiceServer {
 	return &NamingServiceServer{
 		requestHandler:   NewNamingServiceRequestHandler(),
@@ -24,13 +24,13 @@ type NamingServiceServer struct {
 	namnigServerAddr string
 }
 
-// Run runs the naming service
+// RunNamingServer core function to run the naming service
 func (n *NamingServiceServer) RunNamingServer() {
 	go n.runHTTPServerForServiceLookup()
-	n.runSocketForServicesRegistration()
+	n.runHTTPForServicesRegistration()
 }
 
-// runHTTPServerForServiceLookup runs a http server for remote services look-up
+// runHTTPServerForServiceLookup Run a http server for the /lookup endpoint
 func (n *NamingServiceServer) runHTTPServerForServiceLookup() {
 	defer n.listener.Close()
 	log.Printf("Running Lookup Endpoint on %s\n\n", n.namnigServerAddr)
@@ -43,8 +43,8 @@ func (n *NamingServiceServer) runHTTPServerForServiceLookup() {
 	}
 }
 
-// runSocketForServicesRegistration runs a network socket for remote services registration
-func (n *NamingServiceServer) runSocketForServicesRegistration() {
+// runHTTPForServicesRegistration Run a http server for the /register endpoint
+func (n *NamingServiceServer) runHTTPForServicesRegistration() {
 	defer n.listener.Close()
 
 	log.Printf("Running Services Registration on %s", n.namnigServerAddr)
