@@ -8,7 +8,7 @@ import (
 	"github.com/joaoluizn/RPC-Go/RPC-Go-with-pool/network"
 )
 
-// NewNamingService builds a new instance of NamingService
+// NewNamingService create NamingService Entity
 func NewNamingService() *NamingService {
 	return &NamingService{
 		registeredRemoteServices: make(map[string]*network.Service),
@@ -16,13 +16,13 @@ func NewNamingService() *NamingService {
 	}
 }
 
-// NamingService is a naming service who holds the urls to all services available for client
+// NamingService Entity responsible to store all Services Address and Names
 type NamingService struct {
 	registeredRemoteServices map[string]*network.Service
 	marshaller               *network.Marshaller
 }
 
-// RegisterServices registers new services that are available for client
+// RegisterServices register services to become available to clients
 func (n *NamingService) RegisterServices(httpRequest *http.Request) []byte {
 	response := make([]string, 0)
 	registrationReq := n.marshaller.UnmarshalNamingServiceRegistration(httpRequest)
@@ -36,7 +36,7 @@ func (n *NamingService) RegisterServices(httpRequest *http.Request) []byte {
 	return n.marshaller.MarshallRegistrationResponse(response)
 }
 
-// LookupService gets the first response  for the naming service given
+// LookupService Get the address for a specific service if existent
 func (n *NamingService) LookupService(serviceName string) []byte {
 	var response string
 
@@ -47,13 +47,12 @@ func (n *NamingService) LookupService(serviceName string) []byte {
 		return n.marshaller.MarshallLookupResponse(response)
 	} else {
 		response = n.registeredRemoteServices[serviceName].Address
-
 	}
 
 	return n.marshaller.MarshallLookupResponse(response)
 }
 
-// registerService registers a new service that is available for clients
+// registerService register services to become available to clients
 func (n *NamingService) registerService(service *network.Service) string {
 	var response string
 
@@ -77,6 +76,7 @@ func (n *NamingService) registerService(service *network.Service) string {
 	return response
 }
 
+// showRegisteredServices List all registered services onto Naming Service
 func (n *NamingService) showRegisteredServices() {
 	servicesNames := make([]string, 0)
 	mapAddrs := make(map[string]string)

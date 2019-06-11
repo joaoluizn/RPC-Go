@@ -11,6 +11,7 @@ const (
 	namingServerPort = "8923"
 )
 
+// main Naming Server Main function
 func main() {
 	namingServerAddr := fmt.Sprintf("%s:%s", namingServerHost, namingServerPort)
 

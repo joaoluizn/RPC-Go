@@ -6,6 +6,7 @@ import (
 	"github.com/joaoluizn/RPC-Go/RPC-Go-with-pool/layers/infrastructure/storage"
 )
 
+// main Remote Server Main Function
 func main() {
 	storageServerHost := "0.0.0.0"
 

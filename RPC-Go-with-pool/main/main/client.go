@@ -21,6 +21,7 @@ const (
 	namingServerPort = "8923"
 )
 
+// main	Client main function
 func main() {
 
 	//Naming Server Address
