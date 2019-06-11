@@ -15,7 +15,7 @@ type Storage struct {
 
 func NewStorage() *Storage {
 	return &Storage{
-		products:      make([]Product, 10000),
+		products:      make([]Product, 1000000),
 		productsIndex: 0,
 	}
 }
@@ -39,7 +39,6 @@ func (s *Storage) Create(name string, price float64) string {
 	s.products[s.productsIndex] = Product{Id: s.productsIndex, Name: name, Price: price}
 	s.productsIndex++
 
-	// return s.PrintProductList() + "Create Function Complete\n\n"
 	return "Create Function Complete\n"
 
 }

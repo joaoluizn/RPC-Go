@@ -1,8 +1,6 @@
 package client
 
 import (
-	"log"
-
 	"github.com/joaoluizn/RPC-Go/RPC-Go-with-pool/network"
 )
 
@@ -58,10 +56,10 @@ func (w *WorkerPool) useRemoteService(numOfOps int, opName []string, opArgs1 []i
 	}
 	close(operations)
 
-	for r := 0; r < numOfOps; r++ {
-		response := <-responses
-		log.Printf("Response of Operation %d: %s", response.operationId, response.operationResponse)
-	}
+	// for r := 0; r < numOfOps; r++ {
+	// 	response := <-responses
+	// 	log.Printf("Response of Operation %d: %s", response.operationId, response.operationResponse)
+	// }
 	counter += numOfOps
 	for workCounter < numOfOps {
 
@@ -76,10 +74,7 @@ var (
 func (w *WorkerPool) UseRemoteService(operations <-chan Operation, responses chan<- Response) {
 
 	for op := range operations {
-		// Calling a Remote Procedure
-		log.Printf("Operation %d: Calling Remote Procedure: '%s'", op.operationId+counter, op.operationName)
-		// This Invoke can receive the operation to be executed and arguments needed
-		// responses <- Response{(w.Invoke(op).Content[0]), op.operationId}
+		// log.Printf("Operation %d: Calling Remote Procedure: '%s'", op.operationId+counter, op.operationName)
 		responses <- Response{(w.Invoke(op).Content[0]), op.operationId + counter}
 		workCounter++
 	}

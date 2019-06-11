@@ -2,7 +2,6 @@ package naming
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/joaoluizn/RPC-Go/RPC-Go-with-pool/network"
@@ -26,7 +25,7 @@ type NamingService struct {
 func (n *NamingService) RegisterServices(httpRequest *http.Request) []byte {
 	response := make([]string, 0)
 	registrationReq := n.marshaller.UnmarshalNamingServiceRegistration(httpRequest)
-	log.Printf("Register Request Received from: %s\n", registrationReq.ServerAddress)
+	// log.Printf("Register Request Received from: %s\n", registrationReq.ServerAddress)
 	service_list := network.MakeServiceList(registrationReq.ServicesNames, registrationReq.ServerAddress)
 
 	for index := range service_list {
@@ -40,7 +39,7 @@ func (n *NamingService) RegisterServices(httpRequest *http.Request) []byte {
 func (n *NamingService) LookupService(serviceName string) []byte {
 	var response string
 
-	log.Printf("Looking up for service: '%s'\n", serviceName)
+	// log.Printf("Looking up for service: '%s'\n", serviceName)
 	_, nameExists := n.registeredRemoteServices[serviceName]
 
 	if !nameExists {
@@ -86,5 +85,5 @@ func (n *NamingService) showRegisteredServices() {
 		service := n.registeredRemoteServices[key]
 		mapAddrs[key] = service.Address
 	}
-	log.Printf("(NamingServerStatus)> Registered Services: #%d service(s): %s. Addresses: %s\n\n", len(servicesNames), servicesNames, mapAddrs)
+	// log.Printf("(NamingServerStatus)> Registered Services: #%d service(s): %s. Addresses: %s\n\n", len(servicesNames), servicesNames, mapAddrs)
 }
